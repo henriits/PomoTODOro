@@ -21,7 +21,6 @@ class TaskWidget(QWidget):
     def isChecked(self):
         return self.checkbox.isChecked()
 
-
 class TasksList(QListWidget):
     def add_task(self, task_text):
         if task_text:
@@ -37,7 +36,6 @@ class TasksList(QListWidget):
             task_widget = self.itemWidget(item)
             if isinstance(task_widget, TaskWidget) and task_widget.isChecked():
                 self.takeItem(i)
-
 
 class PomodoroTimer(QTimer):
     def __init__(self, parent=None):
@@ -68,7 +66,7 @@ class PomodoroTimer(QTimer):
             self.start_timer()
 
     def start_break(self):
-        self.break_duration = QTime(0, 0, 2) 
+        self.break_duration = QTime(0, 0, 3) 
         self.break_timer.start(1000)
 
     def update_break_timer(self):
@@ -92,6 +90,8 @@ class ToDoListApp(QWidget):
         self.start_button = QPushButton("Start Pomodoro")
         self.timer_label = QLabel("Pomodoro Timer: 00:00")
         self.pomodoro_manager = PomodoroTimer(self)
+        self.break_count = 0
+        self.break_tomato = QLabel("")
 
         self.setup_ui()
 
@@ -101,6 +101,7 @@ class ToDoListApp(QWidget):
         layout.addWidget(QLabel("To-Do List"))
         layout.addWidget(self.task_list)
         layout.addWidget(self.task_input)
+        layout.addWidget(self.break_tomato, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
 
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.add_button)
@@ -118,20 +119,17 @@ class ToDoListApp(QWidget):
         self.setGeometry(100, 100, 400, 300)
 
     def add_task(self):
-        """Add a new task to the list."""
         task_text = self.task_input.text()
         self.task_list.add_task(task_text)
         self.task_input.clear()
 
     def checkbox_state_changed(self, state, item):
-        """Handle checkbox state changes."""
         if state == 2:
             row = self.task_list.row(item)
             self.task_list.takeItem(row)
             del item
 
     def confirm_start_pomodoro(self):
-        """Ask for confirmation before starting the Pomodoro timer."""
         reply = QMessageBox.question(
             self, "Start Pomodoro", 
             "Are you sure you want to start the Pomodoro timer?", 
@@ -141,15 +139,12 @@ class ToDoListApp(QWidget):
             self.start_pomodoro()
 
     def start_pomodoro(self):
-        """Start the Pomodoro timer."""
         self.pomodoro_manager.start_timer()
 
     def update_timer_label(self, duration):
-        """Update the timer label with the given duration."""
         self.timer_label.setText(f"Timer: {duration.toString('mm:ss')}")
 
     def timer_finished(self):
-        """Handle the completion of the Pomodoro timer."""
         QMessageBox.information(
             self, "Pomodoro Finished", 
             "Pomodoro session finished. Take a break!", 
@@ -158,13 +153,18 @@ class ToDoListApp(QWidget):
         self.timer_label.setText("Break Timer: 00:00")
 
     def remove_checked_tasks(self):
-        """Remove checked tasks from the list."""
         self.task_list.remove_checked_tasks()
 
     def break_finished(self):
-        """Handle the completion of the break timer."""
-        self.timer_label.setText("Pomodoro Timer: 00:00")
-
+        reply = QMessageBox.information(
+            self, "Break Finished", 
+            "Time to continue!", 
+            QMessageBox.StandardButton.Ok
+        )
+        if reply == QMessageBox.StandardButton.Ok:
+            self.break_count += 1
+            self.break_tomato.setText("🍅" * self.break_count)
+            self.timer_label.setText("Pomodoro Timer: 00:00")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
