@@ -43,12 +43,18 @@ class PomodoroTimer(QTimer):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.timeout.connect(self.update_timer)
-        self.pomodoro_duration = QTime(0, 0, 10)
-        self.break_duration = QTime(0, 0, 5)
         self.break_timer = QTimer(self)
         self.break_timer.timeout.connect(self.update_break_timer)
+        self.is_pomodoro = True  # Flag to track the current timer type
+
+    def start_timer(self):
+        if self.is_pomodoro:
+            self.start_pomodoro()
+        else:
+            self.start_break()
 
     def start_pomodoro(self):
+        self.pomodoro_duration = QTime(0, 0, 5)
         self.start(1000)
 
     def update_timer(self):
@@ -58,8 +64,11 @@ class PomodoroTimer(QTimer):
         if self.pomodoro_duration == QTime(0, 0):
             self.stop()
             self.parent().timer_finished()
+            self.is_pomodoro = False  # Switch to break timer
+            self.start_timer()
 
     def start_break(self):
+        self.break_duration = QTime(0, 0, 2) 
         self.break_timer.start(1000)
 
     def update_break_timer(self):
@@ -69,7 +78,8 @@ class PomodoroTimer(QTimer):
         if self.break_duration == QTime(0, 0):
             self.break_timer.stop()
             self.parent().break_finished()
-
+            self.is_pomodoro = True  # Switch to Pomodoro timer
+            self.start_timer()
 
 class ToDoListApp(QWidget):
     def __init__(self):
@@ -132,7 +142,7 @@ class ToDoListApp(QWidget):
 
     def start_pomodoro(self):
         """Start the Pomodoro timer."""
-        self.pomodoro_manager.start_pomodoro()
+        self.pomodoro_manager.start_timer()
 
     def update_timer_label(self, duration):
         """Update the timer label with the given duration."""
@@ -146,7 +156,6 @@ class ToDoListApp(QWidget):
             QMessageBox.StandardButton.Ok
         )
         self.timer_label.setText("Break Timer: 00:00")
-        self.pomodoro_manager.start_break()
 
     def remove_checked_tasks(self):
         """Remove checked tasks from the list."""
