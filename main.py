@@ -71,7 +71,7 @@ class PomodoroTimer(QTimer):
 
     def update_break_timer(self):
         self.break_duration = self.break_duration.addSecs(-1)
-        self.parent().update_timer_label(self.break_duration)
+        self.parent().update_timer_label(self.break_duration, is_pomodoro=False)
 
         if self.break_duration == QTime(0, 0):
             self.break_timer.stop()
@@ -88,10 +88,10 @@ class ToDoListApp(QWidget):
         self.add_button = QPushButton("Add Task")
         self.remove_button = QPushButton("Remove Checked Tasks")
         self.start_button = QPushButton("Start Pomodoro")
-        self.timer_label = QLabel("Pomodoro Timer: 00:00")
+        self.timer_label = QLabel("")
         self.pomodoro_manager = PomodoroTimer(self)
         self.break_count = 0
-        self.break_tomato = QLabel("")
+        self.break_tomato = QLabel("🍅" * self.break_count)
 
         self.setup_ui()
 
@@ -115,7 +115,7 @@ class ToDoListApp(QWidget):
         self.remove_button.clicked.connect(self.remove_checked_tasks)
         self.start_button.clicked.connect(self.confirm_start_pomodoro)
 
-        self.setWindowTitle("Pomodoro To-Do List App")
+        self.setWindowTitle("PomoTODOro")
         self.setGeometry(100, 100, 400, 300)
 
     def add_task(self):
@@ -131,8 +131,8 @@ class ToDoListApp(QWidget):
 
     def confirm_start_pomodoro(self):
         reply = QMessageBox.question(
-            self, "Start Pomodoro", 
-            "Are you sure you want to start the Pomodoro timer?", 
+            self, "Start Focus", 
+            "Are you sure you want to start the Focus timer?", 
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         if reply == QMessageBox.StandardButton.Yes:
@@ -141,16 +141,17 @@ class ToDoListApp(QWidget):
     def start_pomodoro(self):
         self.pomodoro_manager.start_timer()
 
-    def update_timer_label(self, duration):
-        self.timer_label.setText(f"Timer: {duration.toString('mm:ss')}")
+    def update_timer_label(self, duration, is_pomodoro=True):
+        timer_type = "Focus" if is_pomodoro else "Break"
+        self.timer_label.setText(f"{timer_type} Timer: {duration.toString('mm:ss')}")
 
     def timer_finished(self):
         QMessageBox.information(
-            self, "Pomodoro Finished", 
-            "Pomodoro session finished. Take a break!", 
+            self, "Finished", 
+            "Focus session finished. Take a break!", 
             QMessageBox.StandardButton.Ok
         )
-        self.timer_label.setText("Break Timer: 00:00")
+        self.update_timer_label(QTime(0, 0), is_pomodoro=False)
 
     def remove_checked_tasks(self):
         self.task_list.remove_checked_tasks()
@@ -164,7 +165,7 @@ class ToDoListApp(QWidget):
         if reply == QMessageBox.StandardButton.Ok:
             self.break_count += 1
             self.break_tomato.setText("🍅" * self.break_count)
-            self.timer_label.setText("Pomodoro Timer: 00:00")
+            self.update_timer_label(QTime(0, 0))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
