@@ -109,7 +109,9 @@ class ToDoListApp(QWidget):
         self.pomodoro_manager = PomodoroTimer(self)
         self.break_count = 0
         self.break_tomato = QLabel("")
-        self.EMOJI = "🍅"
+        self.long_break_emoji = "🥱"
+        self.small_break_emoji= "🍅"
+        self.emojis = []
 
         self.setup_ui()
 
@@ -183,8 +185,10 @@ class ToDoListApp(QWidget):
         if reply == QMessageBox.StandardButton.Ok:
             self.break_count += 1
             if self.break_count % 5 == 0:
-                self.EMOJI = "🥱"  # Change emoji only for the 5th break
-            self.break_tomato.setText(self.EMOJI * self.break_count)
+                self.emojis.append(self.long_break_emoji)
+            else:# Add the long break emoji
+                self.emojis.append(self.small_break_emoji)  # Add the regular break emoji
+            self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
 
 if __name__ == '__main__':
