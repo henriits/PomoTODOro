@@ -44,16 +44,36 @@ class PomodoroTimer(QTimer):
         self.break_timer = QTimer(self)
         self.break_timer.timeout.connect(self.update_break_timer)
         self.is_pomodoro = True  # Flag to track the current timer type
+        self.break_count = 0
+        
 
     def start_timer(self):
         if self.is_pomodoro:
             self.start_pomodoro()
+        elif self.break_count % 5 == 0 and self.break_count != 0:
+            reply = QMessageBox.question(
+                self.parent(), "Start Long Break", 
+                "Are you sure you want to start the Long Break?", 
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if reply == QMessageBox.StandardButton.Yes:
+                self.start_long_break()
+            else:
+                self.start_short_break()
         else:
-            self.start_break()
+            self.start_short_break()
 
     def start_pomodoro(self):
-        self.pomodoro_duration = QTime(0, 0, 5)
+        self.pomodoro_duration = QTime(0, 0, 1)
         self.start(1000)
+
+    def start_short_break(self):
+        self.break_duration = QTime(0, 0, 1) 
+        self.break_timer.start(1000)
+
+    def start_long_break(self):
+        self.break_duration = QTime(0, 0, 1) 
+        self.break_timer.start(1000)
 
     def update_timer(self):
         self.pomodoro_duration = self.pomodoro_duration.addSecs(-1)
@@ -65,10 +85,6 @@ class PomodoroTimer(QTimer):
             self.is_pomodoro = False  # Switch to break timer
             self.start_timer()
 
-    def start_break(self):
-        self.break_duration = QTime(0, 0, 3) 
-        self.break_timer.start(1000)
-
     def update_break_timer(self):
         self.break_duration = self.break_duration.addSecs(-1)
         self.parent().update_timer_label(self.break_duration, is_pomodoro=False)
@@ -77,6 +93,7 @@ class PomodoroTimer(QTimer):
             self.break_timer.stop()
             self.parent().break_finished()
             self.is_pomodoro = True  # Switch to Pomodoro timer
+            self.break_count += 1
             self.start_timer()
 
 class ToDoListApp(QWidget):
@@ -91,7 +108,8 @@ class ToDoListApp(QWidget):
         self.timer_label = QLabel("")
         self.pomodoro_manager = PomodoroTimer(self)
         self.break_count = 0
-        self.break_tomato = QLabel("🍅" * self.break_count)
+        self.break_tomato = QLabel("")
+        self.EMOJI = "🍅"
 
         self.setup_ui()
 
@@ -164,7 +182,9 @@ class ToDoListApp(QWidget):
         )
         if reply == QMessageBox.StandardButton.Ok:
             self.break_count += 1
-            self.break_tomato.setText("🍅" * self.break_count)
+            if self.break_count % 5 == 0:
+                self.EMOJI = "🥱"  # Change emoji only for the 5th break
+            self.break_tomato.setText(self.EMOJI * self.break_count)
             self.update_timer_label(QTime(0, 0))
 
 if __name__ == '__main__':
