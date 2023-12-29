@@ -1,9 +1,10 @@
 import sys
 from PyQt6.QtCore import Qt, QTimer, QTime
 from PyQt6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout,
     QListWidget, QPushButton, QLineEdit, QLabel, QCheckBox, QListWidgetItem, QMessageBox
 )
+from PyQt6 import QtGui
 
 class TaskWidget(QWidget):
     def __init__(self, text):
@@ -135,6 +136,7 @@ class ToDoListApp(QWidget):
         self.remove_button.clicked.connect(self.remove_checked_tasks)
         self.start_button.clicked.connect(self.confirm_start_pomodoro)
 
+        self.setWindowIcon(QtGui.QIcon('tomato.png'))
         self.setWindowTitle("PomoTODOro")
         self.setGeometry(100, 100, 400, 300)
 
