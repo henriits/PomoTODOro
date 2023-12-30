@@ -1,26 +1,39 @@
 import sys
 from PyQt6.QtCore import Qt, QTimer, QTime
 from PyQt6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QHBoxLayout,
-    QListWidget, QPushButton, QLineEdit, QLabel, QCheckBox, QListWidgetItem, QMessageBox
+    QApplication,
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QListWidget,
+    QPushButton,
+    QLineEdit,
+    QLabel,
+    QCheckBox,
+    QListWidgetItem,
+    QMessageBox,
 )
 from PyQt6 import QtGui
+from PyQt6.QtGui import QFont
+
 
 class TaskWidget(QWidget):
     def __init__(self, text):
         super().__init__()
         self.task_label = QLabel(text)
         self.checkbox = QCheckBox()
+        self.task_label.setFont(QFont("Arial", 15))
         self.setup_ui()
 
     def setup_ui(self):
         layout = QHBoxLayout(self)
-        layout.addWidget(self.task_label)
         layout.addWidget(self.checkbox)
+        layout.addWidget(self.task_label)
         self.setLayout(layout)
 
     def isChecked(self):
         return self.checkbox.isChecked()
+
 
 class TasksList(QListWidget):
     def add_task(self, task_text):
@@ -38,6 +51,7 @@ class TasksList(QListWidget):
             if isinstance(task_widget, TaskWidget) and task_widget.isChecked():
                 self.takeItem(i)
 
+
 class PomodoroTimer(QTimer):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -46,16 +60,16 @@ class PomodoroTimer(QTimer):
         self.break_timer.timeout.connect(self.update_break_timer)
         self.is_pomodoro = True  # Flag to track the current timer type
         self.break_count = 0
-        
 
     def start_timer(self):
         if self.is_pomodoro:
             self.start_pomodoro()
         elif self.break_count % 5 == 0 and self.break_count != 0:
             reply = QMessageBox.question(
-                self.parent(), "Start Long Break", 
-                "Are you sure you want to start the Long Break?", 
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+                self.parent(),
+                "Start Long Break",
+                "Are you sure you want to start the Long Break?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             )
             if reply == QMessageBox.StandardButton.Yes:
                 self.start_long_break()
@@ -69,11 +83,11 @@ class PomodoroTimer(QTimer):
         self.start(1000)
 
     def start_short_break(self):
-        self.break_duration = QTime(0, 0, 1) 
+        self.break_duration = QTime(0, 0, 1)
         self.break_timer.start(1000)
 
     def start_long_break(self):
-        self.break_duration = QTime(0, 0, 1) 
+        self.break_duration = QTime(0, 0, 1)
         self.break_timer.start(1000)
 
     def update_timer(self):
@@ -97,6 +111,7 @@ class PomodoroTimer(QTimer):
             self.break_count += 1
             self.start_timer()
 
+
 class ToDoListApp(QWidget):
     def __init__(self):
         super().__init__()
@@ -111,18 +126,24 @@ class ToDoListApp(QWidget):
         self.break_count = 0
         self.break_tomato = QLabel("")
         self.long_break_emoji = "🥱"
-        self.small_break_emoji= "🍅"
+        self.small_break_emoji = "🍅"
         self.emojis = []
 
         self.setup_ui()
 
     def setup_ui(self):
         layout = QVBoxLayout(self)
-        layout.addWidget(self.timer_label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(
+            self.timer_label,
+            alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight,
+        )
         layout.addWidget(QLabel("To-Do List"))
         layout.addWidget(self.task_list)
         layout.addWidget(self.task_input)
-        layout.addWidget(self.break_tomato, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(
+            self.break_tomato,
+            alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft,
+        )
 
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.add_button)
@@ -136,9 +157,9 @@ class ToDoListApp(QWidget):
         self.remove_button.clicked.connect(self.remove_checked_tasks)
         self.start_button.clicked.connect(self.confirm_start_pomodoro)
 
-        self.setWindowIcon(QtGui.QIcon('tomato.png'))
+        self.setWindowIcon(QtGui.QIcon("tomato.png"))
         self.setWindowTitle("PomoTODOro")
-        self.setGeometry(100, 100, 400, 300)
+        self.setGeometry(100, 100, 500, 600)
 
     def add_task(self):
         task_text = self.task_input.text()
@@ -153,9 +174,10 @@ class ToDoListApp(QWidget):
 
     def confirm_start_pomodoro(self):
         reply = QMessageBox.question(
-            self, "Start Focus", 
-            "Are you sure you want to start the Focus timer?", 
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            self,
+            "Start Focus",
+            "Are you sure you want to start the Focus timer?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         )
         if reply == QMessageBox.StandardButton.Yes:
             self.start_pomodoro()
@@ -169,9 +191,10 @@ class ToDoListApp(QWidget):
 
     def timer_finished(self):
         QMessageBox.information(
-            self, "Finished", 
-            "Focus session finished. Take a break!", 
-            QMessageBox.StandardButton.Ok
+            self,
+            "Finished",
+            "Focus session finished. Take a break!",
+            QMessageBox.StandardButton.Ok,
         )
         self.update_timer_label(QTime(0, 0), is_pomodoro=False)
 
@@ -180,20 +203,21 @@ class ToDoListApp(QWidget):
 
     def break_finished(self):
         reply = QMessageBox.information(
-            self, "Break Finished", 
-            "Time to continue!", 
-            QMessageBox.StandardButton.Ok
+            self, "Break Finished", "Time to continue!", QMessageBox.StandardButton.Ok
         )
         if reply == QMessageBox.StandardButton.Ok:
             self.break_count += 1
             if self.break_count % 5 == 0:
                 self.emojis.append(self.long_break_emoji)
-            else:# Add the long break emoji
-                self.emojis.append(self.small_break_emoji)  # Add the regular break emoji
+            else:  # Add the long break emoji
+                self.emojis.append(
+                    self.small_break_emoji
+                )  # Add the regular break emoji
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     todo_app = ToDoListApp()
     todo_app.show()
