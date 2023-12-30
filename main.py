@@ -15,13 +15,16 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6 import QtGui
 from PyQt6.QtGui import QFont
-
+import csv
+import uuid
 
 class TaskWidget(QWidget):
-    def __init__(self, text):
+    def __init__(self, task_id, text, is_checked):
         super().__init__()
+        self.task_id = task_id
         self.task_label = QLabel(text)
         self.checkbox = QCheckBox()
+        self.checkbox.setChecked(is_checked)
         self.task_label.setFont(QFont("Arial", 15))
         self.setup_ui()
 
@@ -36,9 +39,9 @@ class TaskWidget(QWidget):
 
 
 class TasksList(QListWidget):
-    def add_task(self, task_text):
+    def add_task(self, task_id, task_text, is_checked):
         if task_text:
-            task_widget = TaskWidget(task_text)
+            task_widget = TaskWidget(task_id, task_text, is_checked)
             item = QListWidgetItem()
             item.setSizeHint(task_widget.sizeHint())
             self.addItem(item)
@@ -112,10 +115,55 @@ class PomodoroTimer(QTimer):
             self.start_timer()
 
 
+class TaskManager:
+    def __init__(self, csv_file="tasks.csv"):
+        self.csv_file = csv_file
+        self.tasks = []
+        self.load_tasks_from_csv()
+
+    def load_tasks_from_csv(self):
+        try:
+            with open(self.csv_file, "r", newline="") as file:
+                reader = csv.reader(file)
+                self.tasks = list(reader)
+        except FileNotFoundError:
+            # If the file does not exist, initialize an empty list of tasks
+            self.tasks = []
+
+    def save_tasks_to_csv(self):
+        with open(self.csv_file, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["ID", "Task", "Status"])
+            writer.writerows(self.tasks)
+
+    def add_task(self, task_text):
+        if task_text:
+            task_id = str(uuid.uuid4())  # Generate a unique ID for the task
+            self.tasks.append([task_id, task_text, "False"])  # "False" represents unchecked state
+            self.save_tasks_to_csv()
+
+    def remove_checked_tasks(self):
+        # Remove checked tasks from the list in memory
+        self.tasks = [task for task in self.tasks if task[2] == "False"]
+        # Save the updated list to the CSV file
+        self.save_tasks_to_csv()
+
+    def mark_task_as_checked(self, task_id):
+        for task in self.tasks:
+            if task[0] == task_id:
+                task[2] = "True"
+                self.save_tasks_to_csv()
+                break
+
+    def get_tasks(self):
+        return [(task[0], task[1], task[2] == "True") for task in self.tasks[1:]]
+
+
 class ToDoListApp(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.task_manager = TaskManager()
         self.task_list = TasksList()
         self.task_input = QLineEdit()
         self.add_button = QPushButton("Add Task")
@@ -161,16 +209,28 @@ class ToDoListApp(QWidget):
         self.setWindowTitle("PomoTODOro")
         self.setGeometry(100, 100, 500, 600)
 
+        # Load tasks from CSV on startup
+        self.load_tasks_from_csv()
+
     def add_task(self):
         task_text = self.task_input.text()
-        self.task_list.add_task(task_text)
+        self.task_manager.add_task(task_text)
+        self.task_list.add_task(self.task_manager.tasks[-1][0], task_text, False)
         self.task_input.clear()
 
     def checkbox_state_changed(self, state, item):
-        if state == 2:
+        task_id = self.task_list.itemWidget(item).task_id
+        if state == 2:  # Checked state
+            self.task_manager.mark_task_as_checked(task_id)
             row = self.task_list.row(item)
             self.task_list.takeItem(row)
             del item
+            self.task_manager.save_tasks_to_csv()
+            
+    def load_tasks_from_csv(self):
+        tasks = self.task_manager.get_tasks()
+        for task_id, task_text, is_checked in tasks:
+            self.task_list.add_task(task_id, task_text, is_checked)
 
     def confirm_start_pomodoro(self):
         reply = QMessageBox.question(
@@ -199,8 +259,15 @@ class ToDoListApp(QWidget):
         self.update_timer_label(QTime(0, 0), is_pomodoro=False)
 
     def remove_checked_tasks(self):
+        # Save tasks to CSV immediately before removing checked tasks
+        self.task_manager.save_tasks_to_csv()
+        
+        self.task_manager.remove_checked_tasks()
         self.task_list.remove_checked_tasks()
 
+        # Update the CSV file again after removing checked tasks
+        self.task_manager.save_tasks_to_csv()
+        
     def break_finished(self):
         reply = QMessageBox.information(
             self, "Break Finished", "Time to continue!", QMessageBox.StandardButton.Ok
@@ -209,10 +276,8 @@ class ToDoListApp(QWidget):
             self.break_count += 1
             if self.break_count % 5 == 0:
                 self.emojis.append(self.long_break_emoji)
-            else:  # Add the long break emoji
-                self.emojis.append(
-                    self.small_break_emoji
-                )  # Add the regular break emoji
+            else:
+                self.emojis.append(self.small_break_emoji)
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
 
