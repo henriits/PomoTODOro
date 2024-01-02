@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QListWidget, QListWidgetItem
 
 from task_widget import TaskWidget
 
+
 class TasksList(QListWidget):
     def add_task(self, task_text):
         if task_text:

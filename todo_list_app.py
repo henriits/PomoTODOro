@@ -18,6 +18,7 @@ from tasks_list import TasksList
 from pomodoro_timer import PomodoroTimer
 from task_widget import TaskWidget
 
+
 class ToDoListApp(QWidget):
     def __init__(self):
         super().__init__()
@@ -35,8 +36,9 @@ class ToDoListApp(QWidget):
         self.small_break_emoji = "🍅"
         self.emojis = []
         self.break_tomato = QLabel(self)
-        self.break_tomato.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        
+        self.break_tomato.setAlignment(
+            Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft
+        )
 
         self.setup_ui()
         self.setup_logic()
@@ -73,19 +75,38 @@ class ToDoListApp(QWidget):
         self.apply_styles()
 
     def apply_styles(self):
-        self.setStyleSheet("background-color: #be5a73;")
-        self.break_tomato.setStyleSheet("font-size: 18pt; color: #9b072c;")
-        self.timer_label.setStyleSheet("font-size: 18pt; color: #D32F2F;")
-        self.task_input.setStyleSheet("font-size: 14pt; background-color: #5c1527; color: #fff;")
+        self.break_tomato.setStyleSheet("font-size: 18pt; color: #1565C0;")  # Dark Blue
+        self.timer_label.setStyleSheet("font-size: 18pt; color: #0277BD;")  # Light Blue
+        self.task_input.setStyleSheet(
+            "font-size: 14pt; background-color: #E3F2FD; color: #1565C0;"  # Light Blue
+        )
         self.task_list.setStyleSheet("background-color: #fff; color: #333;")
-        self.setStyleSheet("QPushButton { background-color: #D32F2F; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; } QPushButton:hover { background-color: #B71C1C;}")
- 
-        
+        self.setStyleSheet(
+            """
+            QWidget {
+                background-color: #81D4FA; /* Sky Blue */
+                color: #fff;
+                font-size: 16px;
+            }
+            QPushButton {
+                background-color: #1565C0; /* Dark Blue */
+                color: #fff;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 10px;
+            }
+            QPushButton:hover {
+                background-color: #1976D2; /* Slightly darker Blue */
+            }
+            """
+        )
+
+
+
     def setup_logic(self):
         self.add_button.clicked.connect(self.add_task)
         self.remove_button.clicked.connect(self.remove_checked_tasks)
         self.start_button.clicked.connect(self.confirm_start_pomodoro)
-        
 
     def add_task(self):
         task_text = self.task_input.text()
@@ -136,8 +157,7 @@ class ToDoListApp(QWidget):
             "Are you sure you want to start the Focus timer?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         )
-        
-        
+
         if reply == QMessageBox.StandardButton.Yes:
             self.start_pomodoro()
 
@@ -178,5 +198,3 @@ class ToDoListApp(QWidget):
             self.emojis.append(self.long_break_emoji)
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
-
-

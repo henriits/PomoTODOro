@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel, QCheckBox
 from PyQt6.QtGui import QFont
 
+
 class TaskWidget(QWidget):
     def __init__(self, text):
         super().__init__()
