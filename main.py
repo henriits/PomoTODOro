@@ -17,6 +17,7 @@ from PyQt6.QtWidgets import (
 from PyQt6 import QtGui
 from PyQt6.QtGui import QFont
 
+
 class TaskWidget(QWidget):
     def __init__(self, text):
         super().__init__()
@@ -34,6 +35,7 @@ class TaskWidget(QWidget):
     def isChecked(self):
         return self.checkbox.isChecked()
 
+
 class TasksList(QListWidget):
     def add_task(self, task_text):
         if task_text:
@@ -49,6 +51,7 @@ class TasksList(QListWidget):
             task_widget = self.itemWidget(item)
             if isinstance(task_widget, TaskWidget) and task_widget.isChecked():
                 self.takeItem(i)
+
 
 class PomodoroTimer(QTimer):
     def __init__(self, parent=None):
@@ -122,6 +125,7 @@ class PomodoroTimer(QTimer):
             self.is_pomodoro = True
             self.start_timer()
 
+
 class ToDoListApp(QWidget):
     def __init__(self):
         super().__init__()
@@ -140,6 +144,7 @@ class ToDoListApp(QWidget):
         self.emojis = []
 
         self.setup_ui()
+        self.setup_logic()
 
     def setup_ui(self):
         layout = QVBoxLayout(self)
@@ -163,16 +168,17 @@ class ToDoListApp(QWidget):
 
         self.setLayout(layout)
 
-        self.add_button.clicked.connect(self.add_task)
-        self.remove_button.clicked.connect(self.remove_checked_tasks)
-        self.start_button.clicked.connect(self.confirm_start_pomodoro)
-
         self.setWindowIcon(QtGui.QIcon("tomato.png"))
         self.setWindowTitle("PomoTODOro")
         self.setGeometry(100, 100, 500, 600)
 
         # Load tasks from CSV file on startup
         self.load_tasks_from_csv()
+
+    def setup_logic(self):
+        self.add_button.clicked.connect(self.add_task)
+        self.remove_button.clicked.connect(self.remove_checked_tasks)
+        self.start_button.clicked.connect(self.confirm_start_pomodoro)
 
     def add_task(self):
         task_text = self.task_input.text()
@@ -232,7 +238,6 @@ class ToDoListApp(QWidget):
     def update_timer_label(self, duration, is_pomodoro=True):
         timer_type = "Focus" if is_pomodoro else "Break"
         self.timer_label.setText(f"{timer_type} Timer: {duration.toString('mm:ss')}")
-        
 
     def timer_finished(self):
         QMessageBox.information(
@@ -253,10 +258,9 @@ class ToDoListApp(QWidget):
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
             
-                # Debugging prints
-        print(f"Break Count: {self.break_count}")
-        print(f"Emojis: {self.emojis}")
-
+            # Debugging prints
+            #print(f"Break Count: {self.break_count}")
+            #print(f"Emojis: {self.emojis}")
 
     def long_break_finished(self):
         reply = QMessageBox.information(
