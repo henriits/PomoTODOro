@@ -196,7 +196,7 @@ class ToDoListApp(QWidget):
 
     def load_tasks_from_csv(self):
         try:
-            with open('tasks.csv', newline='', encoding='utf-8') as csvfile:
+            with open("tasks.csv", newline="", encoding="utf-8") as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
                     task_text = row[0]
@@ -205,7 +205,7 @@ class ToDoListApp(QWidget):
             pass  # Ignore if the file doesn't exist
 
     def save_tasks_to_csv(self):
-        with open('tasks.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        with open("tasks.csv", "w", newline="", encoding="utf-8") as csvfile:
             writer = csv.writer(csvfile)
             for i in range(self.task_list.count()):
                 item = self.task_list.item(i)
@@ -257,14 +257,17 @@ class ToDoListApp(QWidget):
             self.emojis.append(self.small_break_emoji)
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
-            
+
             # Debugging prints
-            #print(f"Break Count: {self.break_count}")
-            #print(f"Emojis: {self.emojis}")
+            # print(f"Break Count: {self.break_count}")
+            # print(f"Emojis: {self.emojis}")
 
     def long_break_finished(self):
         reply = QMessageBox.information(
-            self, "Long Break Finished", "Time to continue!", QMessageBox.StandardButton.Ok
+            self,
+            "Long Break Finished",
+            "Time to continue!",
+            QMessageBox.StandardButton.Ok,
         )
         if reply == QMessageBox.StandardButton.Ok:
             self.emojis.append(self.long_break_emoji)
