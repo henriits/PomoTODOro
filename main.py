@@ -56,7 +56,7 @@ class PomodoroTimer(QTimer):
         self.timeout.connect(self.update_timer)
         self.break_timer = QTimer(self)
         self.break_timer.timeout.connect(self.update_break_timer)
-        self.long_break_timer = QTimer(self)  # New timer for long break
+        self.long_break_timer = QTimer(self)
         self.long_break_timer.timeout.connect(self.update_long_break_timer)
         self.is_pomodoro = True
         self.break_count = 0
@@ -64,7 +64,7 @@ class PomodoroTimer(QTimer):
     def start_timer(self):
         if self.is_pomodoro:
             self.start_pomodoro()
-        elif self.break_count % 5 == 0 and self.break_count != 0:
+        elif self.break_count % 3 == 0 and self.break_count != 0:
             reply = QMessageBox.question(
                 self.parent(),
                 "Start Long Break",
@@ -72,9 +72,10 @@ class PomodoroTimer(QTimer):
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             )
             if reply == QMessageBox.StandardButton.Yes:
-                self.start_long_break()  # Start the long break
+                self.start_long_break()
             else:
                 self.start_short_break()
+            self.break_count = 0  # Reset break count after asking for a long break
         else:
             self.start_short_break()
 
@@ -119,7 +120,6 @@ class PomodoroTimer(QTimer):
             self.long_break_timer.stop()
             self.parent().long_break_finished()
             self.is_pomodoro = True
-            self.break_count += 1
             self.start_timer()
 
 class ToDoListApp(QWidget):
@@ -232,6 +232,7 @@ class ToDoListApp(QWidget):
     def update_timer_label(self, duration, is_pomodoro=True):
         timer_type = "Focus" if is_pomodoro else "Break"
         self.timer_label.setText(f"{timer_type} Timer: {duration.toString('mm:ss')}")
+        
 
     def timer_finished(self):
         QMessageBox.information(
@@ -251,16 +252,21 @@ class ToDoListApp(QWidget):
             self.emojis.append(self.small_break_emoji)
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
+            
+                # Debugging prints
+        print(f"Break Count: {self.break_count}")
+        print(f"Emojis: {self.emojis}")
+
 
     def long_break_finished(self):
         reply = QMessageBox.information(
             self, "Long Break Finished", "Time to continue!", QMessageBox.StandardButton.Ok
         )
         if reply == QMessageBox.StandardButton.Ok:
-            self.break_count += 1
             self.emojis.append(self.long_break_emoji)
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
