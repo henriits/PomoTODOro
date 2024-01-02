@@ -86,7 +86,8 @@ class ToDoListApp(QWidget):
             QWidget {
                 background-color: #81D4FA; /* Sky Blue */
                 color: #fff;
-                font-size: 16px;
+                font-size: 18px;
+                
             }
             QPushButton {
                 background-color: #1565C0; /* Dark Blue */
@@ -98,6 +99,7 @@ class ToDoListApp(QWidget):
             QPushButton:hover {
                 background-color: #1976D2; /* Slightly darker Blue */
             }
+
             """
         )
 
