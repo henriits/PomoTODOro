@@ -34,6 +34,9 @@ class ToDoListApp(QWidget):
         self.long_break_emoji = "🥱"
         self.small_break_emoji = "🍅"
         self.emojis = []
+        self.break_tomato = QLabel(self)
+        self.break_tomato.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        
 
         self.setup_ui()
         self.setup_logic()
@@ -44,7 +47,7 @@ class ToDoListApp(QWidget):
             self.timer_label,
             alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight,
         )
-        layout.addWidget(QLabel("To-Do List"))
+        layout.addWidget(QLabel("Tasks:"))
         layout.addWidget(self.task_list)
         layout.addWidget(self.task_input)
         layout.addWidget(
@@ -67,10 +70,22 @@ class ToDoListApp(QWidget):
         # Load tasks from CSV file on startup
         self.load_tasks_from_csv()
 
+        self.apply_styles()
+
+    def apply_styles(self):
+        self.setStyleSheet("background-color: #be5a73;")
+        self.break_tomato.setStyleSheet("font-size: 18pt; color: #9b072c;")
+        self.timer_label.setStyleSheet("font-size: 18pt; color: #D32F2F;")
+        self.task_input.setStyleSheet("font-size: 14pt; background-color: #5c1527; color: #fff;")
+        self.task_list.setStyleSheet("background-color: #fff; color: #333;")
+        self.setStyleSheet("QPushButton { background-color: #D32F2F; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; } QPushButton:hover { background-color: #B71C1C;}")
+ 
+        
     def setup_logic(self):
         self.add_button.clicked.connect(self.add_task)
         self.remove_button.clicked.connect(self.remove_checked_tasks)
         self.start_button.clicked.connect(self.confirm_start_pomodoro)
+        
 
     def add_task(self):
         task_text = self.task_input.text()
@@ -121,6 +136,8 @@ class ToDoListApp(QWidget):
             "Are you sure you want to start the Focus timer?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         )
+        
+        
         if reply == QMessageBox.StandardButton.Yes:
             self.start_pomodoro()
 
