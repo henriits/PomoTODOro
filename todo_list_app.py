@@ -124,6 +124,8 @@ class ToDoListApp(QWidget):
         # Save tasks to CSV file
         self.save_tasks_to_csv()
 
+
+# MIGHT NEED TO CREATE SEPERATE CLASS "FILE MANAGER, IF I WANT TO CONNECT USER ACCOUNT WITH CSV NAME"
     def load_tasks_from_csv(self):
         try:
             with open("tasks.csv", newline="", encoding="utf-8") as csvfile:
