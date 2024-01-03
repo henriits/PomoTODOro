@@ -1,6 +1,17 @@
 import csv
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QMessageBox
+from PyQt6.QtWidgets import (
+    QDialog,
+    QVBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QHBoxLayout,
+    QMessageBox,
+    QApplication,
+)
 from PyQt6.QtCore import pyqtSignal
+
+
 class RegisterWindow(QDialog):
     def __init__(self):
         super().__init__()
@@ -40,7 +51,9 @@ class RegisterWindow(QDialog):
             if not register_user(username, password):
                 QMessageBox.warning(self, "Registration Failed", "User already exists.")
             else:
-                QMessageBox.information(self, "Registration Successful", "Registration successful.")
+                QMessageBox.information(
+                    self, "Registration Successful", "Registration successful."
+                )
                 self.accept()
         else:
             QMessageBox.warning(self, "Registration Failed", "Password do not match.")
@@ -48,8 +61,8 @@ class RegisterWindow(QDialog):
 
 def register_user(username, password):
     try:
-        with open('users.csv', 'a', newline='') as csvfile:
-            fieldnames = ['Username', 'Password']
+        with open("users.csv", "a", newline="") as csvfile:
+            fieldnames = ["Username", "Password"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             # Check if the file is empty, if so, write the header
@@ -57,14 +70,14 @@ def register_user(username, password):
                 writer.writeheader()
 
             # Check if the user already exists
-            with open('users.csv', 'r') as csvfile_read:
+            with open("users.csv", "r") as csvfile_read:
                 reader = csv.DictReader(csvfile_read)
                 for row in reader:
-                    if row['Username'] == username:
+                    if row["Username"] == username:
                         return False  # User already exists
 
             # Write the new user
-            writer.writerow({'Username': username, 'Password': password})
+            writer.writerow({"Username": username, "Password": password})
 
         return True  # Registration successful
 
@@ -72,7 +85,9 @@ def register_user(username, password):
         print(f"Error registering user: {e}")
         return False  # Registration failed
 
-from PyQt6.QtWidgets import QApplication
+
+
+
 
 class LoginWindow(QDialog):
     login_successful = pyqtSignal()
@@ -94,7 +109,7 @@ class LoginWindow(QDialog):
         layout.addWidget(self.username_input)
         layout.addWidget(QLabel("Password:"))
         layout.addWidget(self.password_input)
-        
+
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(self.login_button)
         buttons_layout.addWidget(self.register_button)
@@ -122,10 +137,10 @@ class LoginWindow(QDialog):
 
     def check_credentials(self, username, password):
         try:
-            with open('users.csv', 'r') as csvfile_read:
+            with open("users.csv", "r") as csvfile_read:
                 reader = csv.DictReader(csvfile_read)
                 for row in reader:
-                    if row['Username'] == username and row['Password'] == password:
+                    if row["Username"] == username and row["Password"] == password:
                         return True  # Username and password match
             return False  # No matching credentials found
 
@@ -139,7 +154,8 @@ class LoginWindow(QDialog):
             # Handle registration success
             pass
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
