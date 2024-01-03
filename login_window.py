@@ -113,9 +113,25 @@ class LoginWindow(QDialog):
         password = self.password_input.text()
 
         if username and password:
-            # Perform login logic here
-            self.login_successful.emit()
-            self.accept()
+            # Check login credentials
+            if self.check_credentials(username, password):
+                self.login_successful.emit()
+                self.accept()
+            else:
+                QMessageBox.warning(self, "Login Failed", "Wrong username or password.")
+
+    def check_credentials(self, username, password):
+        try:
+            with open('users.csv', 'r') as csvfile_read:
+                reader = csv.DictReader(csvfile_read)
+                for row in reader:
+                    if row['Username'] == username and row['Password'] == password:
+                        return True  # Username and password match
+            return False  # No matching credentials found
+
+        except Exception as e:
+            print(f"Error checking credentials: {e}")
+            return False  # Login check failed
 
     def open_register_window(self):
         register_window = RegisterWindow()
