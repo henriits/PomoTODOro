@@ -1,4 +1,3 @@
-# todo_list_app.py
 import sys
 import csv
 from PyQt6.QtCore import Qt, QTimer, QTime
@@ -20,8 +19,10 @@ from task_widget import TaskWidget
 
 
 class ToDoListApp(QWidget):
-    def __init__(self):
+    def __init__(self, username):  # Add 'username' parameter
         super().__init__()
+
+        self.username = username 
 
         self.task_list = TasksList()
         self.task_input = QLineEdit()
@@ -122,10 +123,12 @@ class ToDoListApp(QWidget):
         # Save tasks to CSV file
         self.save_tasks_to_csv()
 
-    # MIGHT NEED TO CREATE SEPERATE CLASS "FILE MANAGER, IF I WANT TO CONNECT USER ACCOUNT WITH CSV NAME"
     def load_tasks_from_csv(self):
         try:
-            with open("tasks.csv", newline="", encoding="utf-8") as csvfile:
+            # Construct the user-specific CSV filename
+            user_csv_file = f"{self.username}_tasks.csv"
+
+            with open(user_csv_file, newline="", encoding="utf-8") as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
                     task_text = row[0]
@@ -134,7 +137,10 @@ class ToDoListApp(QWidget):
             pass  # Ignore if the file doesn't exist
 
     def save_tasks_to_csv(self):
-        with open("tasks.csv", "w", newline="", encoding="utf-8") as csvfile:
+        # Construct the user-specific CSV filename
+        user_csv_file = f"{self.username}_tasks.csv"
+
+        with open(user_csv_file, "w", newline="", encoding="utf-8") as csvfile:
             writer = csv.writer(csvfile)
             for i in range(self.task_list.count()):
                 item = self.task_list.item(i)
@@ -199,3 +205,10 @@ class ToDoListApp(QWidget):
             self.emojis.append(self.long_break_emoji)
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
+
+    def handle_login_successful(self, username):
+        self.username = username
+        # Load tasks from CSV file on login
+        self.load_tasks_from_csv()
+        # Show the main app window
+        self.show()

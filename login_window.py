@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import (
     QApplication,
 )
 from PyQt6.QtCore import pyqtSignal
+from todo_list_app import ToDoListApp  # Import the ToDoListApp class
 
 
 class RegisterWindow(QDialog):
@@ -86,11 +87,8 @@ def register_user(username, password):
         return False  # Registration failed
 
 
-
-
-
 class LoginWindow(QDialog):
-    login_successful = pyqtSignal()
+    login_successful = pyqtSignal(str)  # Update the signal to include the username
 
     def __init__(self):
         super().__init__()
@@ -130,7 +128,7 @@ class LoginWindow(QDialog):
         if username and password:
             # Check login credentials
             if self.check_credentials(username, password):
-                self.login_successful.emit()
+                self.login_successful.emit(username)  # Emit the username
                 self.accept()
             else:
                 QMessageBox.warning(self, "Login Failed", "Wrong username or password.")
@@ -154,11 +152,21 @@ class LoginWindow(QDialog):
             # Handle registration success
             pass
 
-
+    def get_username(self):
+        return self.username_input.text()
+    
+    
 if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
     login_window = LoginWindow()
+
+    # Create an instance of ToDoListApp
+    todo_list_app = ToDoListApp()
+
+    # Connect the login_successful signal to handle_login_successful slot in ToDoListApp
+    login_window.login_successful.connect(todo_list_app.handle_login_successful)
+
     login_window.show()
     sys.exit(app.exec())
