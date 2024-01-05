@@ -117,7 +117,7 @@ class ToDoListApp(QWidget):
             pass  # Ignore if the file doesn't exist
 
     def save_tasks_to_csv(self):
-        folder_path = "user_data"  # Change this to the desired folder name
+        folder_path = "user_csv_files"
         csv_file_path = os.path.join(folder_path, f"{self.username}_tasks.csv")
 
         with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
