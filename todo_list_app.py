@@ -16,6 +16,7 @@ from PyQt6 import QtGui
 from tasks_list import TasksList
 from pomodoro_timer import PomodoroTimer
 from task_widget import TaskWidget
+from styles import ToDoListStyles
 
 
 class ToDoListApp(QWidget):
@@ -76,33 +77,11 @@ class ToDoListApp(QWidget):
         self.apply_styles()
 
     def apply_styles(self):
-        self.break_tomato.setStyleSheet("font-size: 18pt; color: #1565C0;")  # Dark Blue
-        self.timer_label.setStyleSheet("font-size: 18pt; color: #0277BD;")  # Light Blue
-        self.task_input.setStyleSheet(
-            "font-size: 14pt; background-color: #E3F2FD; color: #1565C0;"  # Light Blue
-        )
-        self.task_list.setStyleSheet("background-color: #fff; color: #333;")
-        self.setStyleSheet(
-            """
-            QWidget {
-                background-color: #81D4FA; /* Sky Blue */
-                color: #fff;
-                font-size: 18px;
-                
-            }
-            QPushButton {
-                background-color: #1565C0; /* Dark Blue */
-                color: #fff;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 10px;
-            }
-            QPushButton:hover {
-                background-color: #1976D2; /* Slightly darker Blue */
-            }
-
-            """
-        )
+        self.break_tomato.setStyleSheet(ToDoListStyles.get_break_tomato_style())
+        self.timer_label.setStyleSheet(ToDoListStyles.get_timer_label_style())
+        self.task_input.setStyleSheet(ToDoListStyles.get_task_input_style())
+        self.task_list.setStyleSheet(ToDoListStyles.get_task_list_style())
+        self.setStyleSheet(ToDoListStyles.get_app_stylesheet())
 
     def setup_logic(self):
         self.add_button.clicked.connect(self.add_task)

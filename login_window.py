@@ -10,7 +10,8 @@ from PyQt6.QtWidgets import (
     QApplication,
 )
 from PyQt6.QtCore import pyqtSignal
-from todo_list_app import ToDoListApp  # Import the ToDoListApp class
+from todo_list_app import ToDoListApp
+from styles import LoginWindowStyles
 
 
 class RegisterWindow(QDialog):
@@ -100,22 +101,27 @@ class LoginWindow(QDialog):
 
         self.setup_ui()
         self.setup_logic()
+        self.apply_styles()
 
     def setup_ui(self):
         layout = QVBoxLayout(self)
-        layout.addWidget(QLabel("Username:"))
+        layout_margin = LoginWindowStyles.get_layout_margin()
+        app_stylesheet = LoginWindowStyles.get_app_stylesheet()
+        self.setStyleSheet(app_stylesheet)
+        username_label = QLabel("Username:")
+        layout.addWidget(username_label)
         layout.addWidget(self.username_input)
-        layout.addWidget(QLabel("Password:"))
+        password_label = QLabel("Password:")
+        layout.addWidget(password_label)
         layout.addWidget(self.password_input)
-
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(self.login_button)
         buttons_layout.addWidget(self.register_button)
         layout.addLayout(buttons_layout)
-
+        layout.setContentsMargins(layout_margin, layout_margin, layout_margin, layout_margin)
         self.setLayout(layout)
         self.setWindowTitle("Login")
-        self.setGeometry(200, 200, 300, 150)
+        self.setGeometry(200, 200, 500, 350)
 
     def setup_logic(self):
         self.login_button.clicked.connect(self.try_login)
@@ -155,6 +161,15 @@ class LoginWindow(QDialog):
     def get_username(self):
         return self.username_input.text()
     
+    
+    def apply_styles(self):
+        input_style = LoginWindowStyles.get_input_style()
+        button_style = LoginWindowStyles.get_button_style()
+
+        self.username_input.setStyleSheet(input_style)
+        self.password_input.setStyleSheet(input_style)
+        self.login_button.setStyleSheet(button_style)
+        self.register_button.setStyleSheet(button_style)
     
 if __name__ == "__main__":
     import sys
