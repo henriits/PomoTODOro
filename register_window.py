@@ -1,6 +1,7 @@
 import csv
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 from styles import RegisterWindowStyles
+import os
 
 class RegisterWindow(QDialog):
     def __init__(self):
@@ -64,9 +65,19 @@ class RegisterWindow(QDialog):
         self.confirm_password_input.setStyleSheet(input_style)
         self.register_button.setStyleSheet(button_style)
 
+
+
 def register_user(username, password):
+    folder_path = "user_csv_files"  # Change this to the desired folder name
+
+    # Create the folder if it doesn't exist
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
     try:
-        with open("users.csv", "a", newline="") as csvfile:
+        csv_file_path = os.path.join(folder_path, "users.csv")
+
+        with open(csv_file_path, "a", newline="") as csvfile:
             fieldnames = ["Username", "Password"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -75,7 +86,7 @@ def register_user(username, password):
                 writer.writeheader()
 
             # Check if the user already exists
-            with open("users.csv", "r") as csvfile_read:
+            with open(csv_file_path, "r") as csvfile_read:
                 reader = csv.DictReader(csvfile_read)
                 for row in reader:
                     if row["Username"] == username:

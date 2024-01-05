@@ -17,6 +17,7 @@ from tasks_list import TasksList
 from pomodoro_timer import PomodoroTimer
 from task_widget import TaskWidget
 from styles import ToDoListStyles
+import os
 
 
 class ToDoListApp(QWidget):
@@ -104,10 +105,10 @@ class ToDoListApp(QWidget):
 
     def load_tasks_from_csv(self):
         try:
-            # Construct the user-specific CSV filename
-            user_csv_file = f"{self.username}_tasks.csv"
+            folder_path = "user_csv_files"
+            csv_file_path = os.path.join(folder_path, f"{self.username}_tasks.csv")
 
-            with open(user_csv_file, newline="", encoding="utf-8") as csvfile:
+            with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
                     task_text = row[0]
@@ -116,10 +117,10 @@ class ToDoListApp(QWidget):
             pass  # Ignore if the file doesn't exist
 
     def save_tasks_to_csv(self):
-        # Construct the user-specific CSV filename
-        user_csv_file = f"{self.username}_tasks.csv"
+        folder_path = "user_data"  # Change this to the desired folder name
+        csv_file_path = os.path.join(folder_path, f"{self.username}_tasks.csv")
 
-        with open(user_csv_file, "w", newline="", encoding="utf-8") as csvfile:
+        with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
             writer = csv.writer(csvfile)
             for i in range(self.task_list.count()):
                 item = self.task_list.item(i)

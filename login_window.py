@@ -13,6 +13,7 @@ from PyQt6.QtCore import pyqtSignal
 from todo_list_app import ToDoListApp
 from styles import LoginWindowStyles
 from register_window import RegisterWindow
+import os
 
 
 
@@ -69,7 +70,10 @@ class LoginWindow(QDialog):
 
     def check_credentials(self, username, password):
         try:
-            with open("users.csv", "r") as csvfile_read:
+            folder_path = "user_csv_files"
+            csv_file_path = os.path.join(folder_path, "users.csv")
+
+            with open(csv_file_path, "r") as csvfile_read:
                 reader = csv.DictReader(csvfile_read)
                 for row in reader:
                     if row["Username"] == username and row["Password"] == password:
