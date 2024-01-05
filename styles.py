@@ -73,3 +73,40 @@ class LoginWindowStyles:
                 background-color: #1976D2; /* Slightly darker Blue */
             }
         """
+        
+class RegisterWindowStyles:
+    @staticmethod
+    def get_layout_margin():
+        return 10
+
+    @staticmethod
+    def get_app_stylesheet():
+        return """
+            QDialog {
+                background-color: #81D4FA; /* Sky Blue */
+            }
+        """
+
+    @staticmethod
+    def get_input_style():
+        return """
+            QLineEdit {
+                font-size: 14pt;
+                background-color: #E3F2FD; /* Light Blue */
+                color: #1565C0; /* Dark Blue */
+            }
+        """
+
+    @staticmethod
+    def get_button_style():
+        return """
+            QPushButton {
+                background-color: #1565C0; /* Dark Blue */
+                color: #fff;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 10px;
+            }
+            QPushButton:hover {
+                background-color: #1976D2; /* Slightly darker Blue */
+            }"""
