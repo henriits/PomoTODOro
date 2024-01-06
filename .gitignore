@@ -3,3 +3,6 @@
 settings.json
 test.py
 *csv
+/build
+*spec
+*exe
