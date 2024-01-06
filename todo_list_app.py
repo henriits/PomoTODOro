@@ -31,7 +31,7 @@ class ToDoListApp(QWidget):
         self.add_button = QPushButton("Add Task")
         self.remove_button = QPushButton("Remove Checked Tasks")
         self.start_button = QPushButton("Start Pomodoro")
-        self.stop_button = QPushButton("Stop Pomodoro") 
+        self.stop_button = QPushButton("Reset Pomodoro") 
         self.timer_label = QLabel("")
         self.pomodoro_manager = PomodoroTimer(self)
         self.break_count = 0
@@ -183,7 +183,7 @@ class ToDoListApp(QWidget):
             confirmation = QMessageBox.question(
                 self,
                 "Stop Timer",
-                "Are you sure you want to stop the timer?",
+                "Are you sure you want to reset the timer?",
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             )
 
