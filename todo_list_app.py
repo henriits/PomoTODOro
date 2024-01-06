@@ -31,6 +31,7 @@ class ToDoListApp(QWidget):
         self.add_button = QPushButton("Add Task")
         self.remove_button = QPushButton("Remove Checked Tasks")
         self.start_button = QPushButton("Start Pomodoro")
+        self.stop_button = QPushButton("Stop Pomodoro") 
         self.timer_label = QLabel("")
         self.pomodoro_manager = PomodoroTimer(self)
         self.break_count = 0
@@ -63,7 +64,14 @@ class ToDoListApp(QWidget):
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.add_button)
         button_layout.addWidget(self.remove_button)
+        # Add both start and stop buttons to the layout initially
         button_layout.addWidget(self.start_button)
+        button_layout.addWidget(self.stop_button)
+        
+        # Set the initial visibility based on the timer state
+        self.start_button.setVisible(not self.pomodoro_manager.isActive())
+        self.stop_button.setVisible(self.pomodoro_manager.isActive())
+        
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
@@ -88,6 +96,7 @@ class ToDoListApp(QWidget):
         self.add_button.clicked.connect(self.add_task)
         self.remove_button.clicked.connect(self.remove_checked_tasks)
         self.start_button.clicked.connect(self.confirm_start_pomodoro)
+        self.stop_button.clicked.connect(self.stop_pomodoro)
 
     def add_task(self):
         task_text = self.task_input.text()
@@ -150,6 +159,45 @@ class ToDoListApp(QWidget):
 
     def start_pomodoro(self):
         self.pomodoro_manager.start_timer()
+        self.start_button.setVisible(False)
+        self.stop_button.setVisible(True)
+
+    def reset_application_state(self):
+        # Stop both Pomodoro and break timers
+        self.pomodoro_manager.stop()
+        self.pomodoro_manager.break_timer.stop()
+
+        # Reset UI elements
+        self.start_button.setVisible(True)
+        self.stop_button.setVisible(False)
+        self.break_tomato.setText("")
+        self.update_timer_label(QTime(0, 0), is_pomodoro=False)
+        
+        # Reset other relevant state variables
+        self.break_count = 0
+        self.emojis = []
+
+    def stop_pomodoro(self):
+        # Check if either the Pomodoro timer or break timer is active
+        if self.pomodoro_manager.isActive() or self.pomodoro_manager.break_timer.isActive():
+            confirmation = QMessageBox.question(
+                self,
+                "Stop Timer",
+                "Are you sure you want to stop the timer?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            )
+
+            if confirmation == QMessageBox.StandardButton.Yes:
+                if self.pomodoro_manager.is_pomodoro:
+                    # If it's a Pomodoro session, stop the Pomodoro timer
+                    self.pomodoro_manager.stop()
+                else:
+                    # If it's a break session, stop the break timer and reset it
+                    self.pomodoro_manager.break_timer.stop()
+
+                # Reset the application state
+                self.reset_application_state()
+
 
     def update_timer_label(self, duration, is_pomodoro=True):
         timer_type = "Focus" if is_pomodoro else "Break"
