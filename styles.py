@@ -38,6 +38,20 @@ class ToDoListStyles:
                 background-color: #1976D2; /* Slightly darker Blue */
             }
         """
+class InfoStyles:
+    @staticmethod
+    def get_info_dialog_stylesheet():
+        return """
+            QDialog {
+                background-color: #81D4FA; /* Sky Blue */
+                color: #fff;
+                font-size: 18px;
+            }
+        """
+
+    @staticmethod
+    def get_info_label_stylesheet():
+        return "font-size: 26px; color: #fff;"  # Adjust font size and color as needed
 
 
 class LoginWindowStyles:

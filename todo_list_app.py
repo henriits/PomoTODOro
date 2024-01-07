@@ -117,6 +117,7 @@ class ToDoListApp(QWidget):
         self.save_tasks_to_csv()
         
     def show_info_dialog(self):
+        self.info_dialog.apply_styles()
         self.info_dialog.exec()
 
     def load_tasks_from_csv(self):
