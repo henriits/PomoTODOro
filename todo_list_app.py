@@ -78,7 +78,7 @@ class ToDoListApp(QWidget):
 
         self.setWindowIcon(QtGui.QIcon("tomato.png"))
         self.setWindowTitle("PomoTODOro")
-        self.setGeometry(100, 100, 700, 400)
+        self.setGeometry(800, 200, 700, 600)
 
         # Load tasks from CSV file on startup
         self.load_tasks_from_csv()

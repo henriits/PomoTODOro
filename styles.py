@@ -5,7 +5,11 @@ class ToDoListStyles:
 
     @staticmethod
     def get_timer_label_style():
-        return "font-size: 18pt; color: #0277BD;"  # Light Blue
+        return """                
+                font-size: 62px;  /* Set your desired font size */
+                font-weight: bold;
+                color: #fff;  /* Set your desired text color */
+                text-align: center;  /* Center the text */"""
 
     @staticmethod
     def get_task_input_style():
@@ -85,7 +89,10 @@ class RegisterWindowStyles:
             QDialog {
                 background-color: #81D4FA; /* Sky Blue */
             }
-        """
+
+            """
+
+
 
     @staticmethod
     def get_input_style():
