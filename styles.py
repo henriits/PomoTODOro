@@ -119,6 +119,7 @@ class RegisterWindowStyles:
                 font-size: 14pt;
                 background-color: #E3F2FD;
                 color: #1565C0;
+                }
         """
 
     @staticmethod
