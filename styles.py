@@ -1,19 +1,19 @@
 class ToDoListStyles:
     @staticmethod
     def get_break_tomato_style():
-        return "font-size: 18pt; color: #1565C0;"  # Dark Blue
+        return "font-size: 18pt; color: #1565C0;"
 
     @staticmethod
     def get_timer_label_style():
         return """                
-                font-size: 62px;  /* Set your desired font size */
+                font-size: 76px;
                 font-weight: bold;
-                color: #fff;  /* Set your desired text color */
-                text-align: center;  /* Center the text */"""
+                color: #fff;
+                text-align: center;"""
 
     @staticmethod
     def get_task_input_style():
-        return "font-size: 14pt; background-color: #E3F2FD; color: #1565C0;"  # Light Blue
+        return "font-size: 14pt; background-color: #E3F2FD; color: #1565C0;"
 
     @staticmethod
     def get_task_list_style():
@@ -23,27 +23,33 @@ class ToDoListStyles:
     def get_app_stylesheet():
         return """
             QWidget {
-                background-color: #81D4FA; /* Sky Blue */
+                background-color: #81D4FA;
                 color: #fff;
                 font-size: 18px;
             }
+            QMessageBox QLabel {
+                font-size: 24px; 
+            }
+            
             QPushButton {
-                background-color: #1565C0; /* Dark Blue */
+                background-color: #1565C0;
                 color: #fff;
                 border: none;
                 padding: 8px 16px;
                 border-radius: 10px;
             }
             QPushButton:hover {
-                background-color: #1976D2; /* Slightly darker Blue */
+                background-color: #1976D2;
             }
         """
+
+
 class InfoStyles:
     @staticmethod
     def get_info_dialog_stylesheet():
         return """
             QDialog {
-                background-color: #81D4FA; /* Sky Blue */
+                background-color: #81D4FA;
                 color: #fff;
                 font-size: 18px;
             }
@@ -51,7 +57,7 @@ class InfoStyles:
 
     @staticmethod
     def get_info_label_stylesheet():
-        return "font-size: 26px; color: #fff;"  # Adjust font size and color as needed
+        return "font-size: 26px; color: #fff;"
 
 
 class LoginWindowStyles:
@@ -63,7 +69,7 @@ class LoginWindowStyles:
     def get_app_stylesheet():
         return """
             QDialog {
-                background-color: #81D4FA; /* Sky Blue */
+                background-color: #81D4FA;
             }
         """
 
@@ -72,8 +78,8 @@ class LoginWindowStyles:
         return """
             QLineEdit {
                 font-size: 14pt;
-                background-color: #E3F2FD; /* Light Blue */
-                color: #1565C0; /* Dark Blue */
+                background-color: #E3F2FD;
+                color: #1565C0;
             }
         """
 
@@ -81,17 +87,18 @@ class LoginWindowStyles:
     def get_button_style():
         return """
             QPushButton {
-                background-color: #1565C0; /* Dark Blue */
+                background-color: #1565C0;
                 color: #fff;
                 border: none;
                 padding: 8px 16px;
                 border-radius: 10px;
             }
             QPushButton:hover {
-                background-color: #1976D2; /* Slightly darker Blue */
+                background-color: #1976D2;
             }
         """
-        
+
+
 class RegisterWindowStyles:
     @staticmethod
     def get_layout_margin():
@@ -101,33 +108,30 @@ class RegisterWindowStyles:
     def get_app_stylesheet():
         return """
             QDialog {
-                background-color: #81D4FA; /* Sky Blue */
+                background-color: #81D4FA;
             }
 
             """
-
-
 
     @staticmethod
     def get_input_style():
         return """
             QLineEdit {
                 font-size: 14pt;
-                background-color: #E3F2FD; /* Light Blue */
-                color: #1565C0; /* Dark Blue */
-            }
+                background-color: #E3F2FD;
+                color: #1565C0;
         """
 
     @staticmethod
     def get_button_style():
         return """
             QPushButton {
-                background-color: #1565C0; /* Dark Blue */
+                background-color: #1565C0;
                 color: #fff;
                 border: none;
                 padding: 8px 16px;
                 border-radius: 10px;
             }
             QPushButton:hover {
-                background-color: #1976D2; /* Slightly darker Blue */
+                background-color: #1976D2;
             }"""

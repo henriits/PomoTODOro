@@ -43,6 +43,10 @@ class LoginWindow(QDialog):
         layout.addWidget(self.username_input)
         password_label = QLabel("Password:")
         layout.addWidget(password_label)
+        
+        # Set the echo mode for the password_input QLineEdit
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+        
         layout.addWidget(self.password_input)
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(self.login_button)

@@ -25,12 +25,17 @@ class RegisterWindow(QDialog):
         username_label = QLabel("Username:")
         layout.addWidget(username_label)
         layout.addWidget(self.username_input)
+        
         password_label = QLabel("Password:")
         layout.addWidget(password_label)
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.password_input)
+        
         confirm_password_label = QLabel("Confirm Password:")
         layout.addWidget(confirm_password_label)
+        self.confirm_password_input.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.confirm_password_input)
+        
         layout.addWidget(self.register_button)
         layout.setContentsMargins(layout_margin, layout_margin, layout_margin, layout_margin)
         self.setLayout(layout)
