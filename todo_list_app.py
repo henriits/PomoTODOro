@@ -16,10 +16,10 @@ from pomodoro_timer import PomodoroTimer
 from task_widget import TaskWidget
 from styles import ToDoListStyles
 import os
-import re  # Add this import
+
 
 class ToDoListApp(QWidget):
-    def __init__(self, email):  # Change to email
+    def __init__(self, email):
         super().__init__()
 
         self.email = email
