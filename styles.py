@@ -5,7 +5,7 @@ class ToDoListStyles:
 
     @staticmethod
     def get_timer_label_style():
-        return """                
+        return """
                 font-size: 76px;
                 font-weight: bold;
                 color: #fff;
@@ -28,9 +28,8 @@ class ToDoListStyles:
                 font-size: 18px;
             }
             QMessageBox QLabel {
-                font-size: 24px; 
+                font-size: 24px;
             }
-            
             QPushButton {
                 background-color: #1565C0;
                 color: #fff;
