@@ -13,7 +13,7 @@ from PyQt6.QtCore import pyqtSignal
 from styles import LoginWindowStyles
 from register_window import RegisterWindow
 import os
-
+import re
 
 class LoginWindow(QDialog):
     login_successful = pyqtSignal(str)
@@ -21,7 +21,7 @@ class LoginWindow(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.username_input = QLineEdit()
+        self.email_input = QLineEdit()
         self.password_input = QLineEdit()
         self.login_button = QPushButton("Login")
         self.register_button = QPushButton("Register")
@@ -35,9 +35,9 @@ class LoginWindow(QDialog):
         layout_margin = LoginWindowStyles.get_layout_margin()
         app_stylesheet = LoginWindowStyles.get_app_stylesheet()
         self.setStyleSheet(app_stylesheet)
-        username_label = QLabel("Username:")
-        layout.addWidget(username_label)
-        layout.addWidget(self.username_input)
+        email_label = QLabel("Email:")
+        layout.addWidget(email_label)
+        layout.addWidget(self.email_input)
         password_label = QLabel("Password:")
         layout.addWidget(password_label)
 
@@ -62,17 +62,22 @@ class LoginWindow(QDialog):
         self.register_button.clicked.connect(self.open_register_window)
 
     def try_login(self):
-        username = self.username_input.text()
+        email = self.email_input.text()
         password = self.password_input.text()
 
-        if username and password:
-            if self.check_credentials(username, password):
-                self.login_successful.emit(username)
+        # Validate email using regex
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            QMessageBox.warning(self, "Login Failed", "Invalid email format.")
+            return
+
+        if email and password:
+            if self.check_credentials(email, password):
+                self.login_successful.emit(email)
                 self.accept()
             else:
-                QMessageBox.warning(self, "Login Failed", "Wrong username or password.")
+                QMessageBox.warning(self, "Login Failed", "Wrong email or password.")
 
-    def check_credentials(self, username, password):
+    def check_credentials(self, email, password):
         try:
             folder_path = "user_csv_files"
             csv_file_path = os.path.join(folder_path, "users.csv")
@@ -80,7 +85,7 @@ class LoginWindow(QDialog):
             with open(csv_file_path, "r") as csvfile_read:
                 reader = csv.DictReader(csvfile_read)
                 for row in reader:
-                    if row["Username"] == username and row["Password"] == password:
+                    if row["Email"] == email and row["Password"] == password:
                         return True
             return False
 
@@ -93,14 +98,14 @@ class LoginWindow(QDialog):
         if register_window.exec() == QDialog.accepted:
             pass
 
-    def get_username(self):
-        return self.username_input.text()
+    def get_email(self):
+        return self.email_input.text()
 
     def apply_styles(self):
         input_style = LoginWindowStyles.get_input_style()
         button_style = LoginWindowStyles.get_button_style()
 
-        self.username_input.setStyleSheet(input_style)
+        self.email_input.setStyleSheet(input_style)
         self.password_input.setStyleSheet(input_style)
         self.login_button.setStyleSheet(button_style)
         self.register_button.setStyleSheet(button_style)

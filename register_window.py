@@ -10,13 +10,13 @@ from PyQt6.QtWidgets import (
 from styles import RegisterWindowStyles
 from PyQt6 import QtGui
 import os
-
+import re
 
 class RegisterWindow(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.username_input = QLineEdit()
+        self.email_input = QLineEdit()
         self.password_input = QLineEdit()
         self.confirm_password_input = QLineEdit()
         self.register_button = QPushButton("Register")
@@ -30,9 +30,9 @@ class RegisterWindow(QDialog):
         layout_margin = RegisterWindowStyles.get_layout_margin()
         app_stylesheet = RegisterWindowStyles.get_app_stylesheet()
         self.setStyleSheet(app_stylesheet)
-        username_label = QLabel("Username:")
-        layout.addWidget(username_label)
-        layout.addWidget(self.username_input)
+        email_label = QLabel("Email:")
+        layout.addWidget(email_label)
+        layout.addWidget(self.email_input)
 
         password_label = QLabel("Password:")
         layout.addWidget(password_label)
@@ -51,18 +51,23 @@ class RegisterWindow(QDialog):
         self.setLayout(layout)
         self.setWindowIcon(QtGui.QIcon("tomato.png"))
         self.setWindowTitle("Register")
-        self.setGeometry(1200, 200, 300, 100)
+        self.setGeometry(1200, 200, 300, 150)
 
     def setup_logic(self):
         self.register_button.clicked.connect(self.try_register)
 
     def try_register(self):
-        username = self.username_input.text()
+        email = self.email_input.text()
         password = self.password_input.text()
         confirm_password = self.confirm_password_input.text()
 
-        if username and password == confirm_password:
-            if not register_user(username, password):
+        # Validate email using regex
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            QMessageBox.warning(self, "Registration Failed", "Invalid email format.")
+            return
+
+        if email and password == confirm_password:
+            if not register_user(email, password):
                 QMessageBox.warning(self, "Registration Failed", "User already exists.")
             else:
                 QMessageBox.information(
@@ -76,13 +81,12 @@ class RegisterWindow(QDialog):
         input_style = RegisterWindowStyles.get_input_style()
         button_style = RegisterWindowStyles.get_button_style()
 
-        self.username_input.setStyleSheet(input_style)
+        self.email_input.setStyleSheet(input_style)
         self.password_input.setStyleSheet(input_style)
         self.confirm_password_input.setStyleSheet(input_style)
         self.register_button.setStyleSheet(button_style)
 
-
-def register_user(username, password):
+def register_user(email, password):
     folder_path = "user_csv_files"
 
     # Create the folder if it doesn't exist
@@ -93,7 +97,7 @@ def register_user(username, password):
         csv_file_path = os.path.join(folder_path, "users.csv")
 
         with open(csv_file_path, "a", newline="") as csvfile:
-            fieldnames = ["Username", "Password"]
+            fieldnames = ["Email", "Password"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             # Check if the file is empty, if so, write the header
@@ -104,11 +108,11 @@ def register_user(username, password):
             with open(csv_file_path, "r") as csvfile_read:
                 reader = csv.DictReader(csvfile_read)
                 for row in reader:
-                    if row["Username"] == username:
+                    if row["Email"] == email:
                         return False  # User already exists
 
             # Write the new user
-            writer.writerow({"Username": username, "Password": password})
+            writer.writerow({"Email": email, "Password": password})
 
         return True
 

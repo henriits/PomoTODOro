@@ -16,13 +16,13 @@ from pomodoro_timer import PomodoroTimer
 from task_widget import TaskWidget
 from styles import ToDoListStyles
 import os
-
+import re  # Add this import
 
 class ToDoListApp(QWidget):
-    def __init__(self, username):
+    def __init__(self, email):  # Change to email
         super().__init__()
 
-        self.username = username
+        self.email = email
         self.info_dialog = InfoDialog(
             focus_time=25, short_break_time=5, long_break_time=15
         )
@@ -112,7 +112,7 @@ class ToDoListApp(QWidget):
     def load_tasks_from_csv(self):
         try:
             folder_path = "user_csv_files"
-            csv_file_path = os.path.join(folder_path, f"{self.username}_tasks.csv")
+            csv_file_path = os.path.join(folder_path, f"{self.email.split('@')[0]}_tasks.csv")
 
             with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
                 reader = csv.reader(csvfile)
@@ -124,7 +124,7 @@ class ToDoListApp(QWidget):
 
     def save_tasks_to_csv(self):
         folder_path = "user_csv_files"
-        csv_file_path = os.path.join(folder_path, f"{self.username}_tasks.csv")
+        csv_file_path = os.path.join(folder_path, f"{self.email.split('@')[0]}_tasks.csv")
 
         with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
             writer = csv.writer(csvfile)
@@ -224,7 +224,7 @@ class ToDoListApp(QWidget):
             self.break_tomato.setText(" ".join(self.emojis))
             self.update_timer_label(QTime(0, 0))
 
-    def handle_login_successful(self, username):
-        self.username = username
+    def handle_login_successful(self, email):
+        self.email = email
         self.load_tasks_from_csv()
         self.show()
