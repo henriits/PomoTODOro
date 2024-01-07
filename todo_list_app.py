@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
     QMessageBox,
 )
 from PyQt6 import QtGui
-
+from info import InfoDialog
 from tasks_list import TasksList
 from pomodoro_timer import PomodoroTimer
 from task_widget import TaskWidget
@@ -25,7 +25,7 @@ class ToDoListApp(QWidget):
         super().__init__()
 
         self.username = username 
-
+        self.info_dialog = InfoDialog(focus_time=25, short_break_time=5, long_break_time=15)
         self.task_list = TasksList()
         self.task_input = QLineEdit()
         self.add_button = QPushButton("Add Task")
@@ -100,6 +100,7 @@ class ToDoListApp(QWidget):
         self.remove_button.clicked.connect(self.remove_checked_tasks)
         self.start_button.clicked.connect(self.confirm_start_pomodoro)
         self.stop_button.clicked.connect(self.stop_pomodoro)
+        self.show_info.clicked.connect(self.show_info_dialog)
 
     def add_task(self):
         task_text = self.task_input.text()
@@ -114,6 +115,9 @@ class ToDoListApp(QWidget):
 
         # Save tasks to CSV file
         self.save_tasks_to_csv()
+        
+    def show_info_dialog(self):
+        self.info_dialog.exec()
 
     def load_tasks_from_csv(self):
         try:
