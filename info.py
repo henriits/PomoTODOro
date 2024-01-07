@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QDialog, QLabel, QVBoxLayout
 from styles import InfoStyles
 from PyQt6 import QtGui
 
+
 class InfoDialog(QDialog):
     def __init__(self, focus_time, short_break_time, long_break_time):
         super().__init__()
@@ -33,7 +34,7 @@ class InfoDialog(QDialog):
         layout = QVBoxLayout()
         layout.addWidget(info_label)
         self.setLayout(layout)
-        
+
         self.apply_styles()
 
     def apply_styles(self):

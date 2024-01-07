@@ -1,8 +1,6 @@
-import sys
 import csv
-from PyQt6.QtCore import Qt, QTimer, QTime
+from PyQt6.QtCore import Qt, QTime
 from PyQt6.QtWidgets import (
-    QApplication,
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
@@ -21,17 +19,19 @@ import os
 
 
 class ToDoListApp(QWidget):
-    def __init__(self, username):  # Add 'username' parameter
+    def __init__(self, username):
         super().__init__()
 
-        self.username = username 
-        self.info_dialog = InfoDialog(focus_time=25, short_break_time=5, long_break_time=15)
+        self.username = username
+        self.info_dialog = InfoDialog(
+            focus_time=25, short_break_time=5, long_break_time=15
+        )
         self.task_list = TasksList()
         self.task_input = QLineEdit()
         self.add_button = QPushButton("Add Task")
         self.remove_button = QPushButton("Remove Checked Tasks")
         self.start_button = QPushButton("Start Pomodoro")
-        self.stop_button = QPushButton("Reset Pomodoro") 
+        self.stop_button = QPushButton("Reset Pomodoro")
         self.show_info = QPushButton("Show Info")
         self.timer_label = QLabel("")
         self.pomodoro_manager = PomodoroTimer(self)
@@ -67,25 +67,18 @@ class ToDoListApp(QWidget):
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.add_button)
         button_layout.addWidget(self.remove_button)
-        # Add both start and stop buttons to the layout initially
         button_layout.addWidget(self.start_button)
         button_layout.addWidget(self.stop_button)
-        
-        # Set the initial visibility based on the timer state
         self.start_button.setVisible(not self.pomodoro_manager.isActive())
         self.stop_button.setVisible(self.pomodoro_manager.isActive())
-        
         layout.addLayout(button_layout)
-
         self.setLayout(layout)
 
         self.setWindowIcon(QtGui.QIcon("tomato.png"))
         self.setWindowTitle("PomoTODOro")
         self.setGeometry(800, 200, 700, 600)
 
-        # Load tasks from CSV file on startup
         self.load_tasks_from_csv()
-
         self.apply_styles()
 
     def apply_styles(self):
@@ -106,16 +99,12 @@ class ToDoListApp(QWidget):
         task_text = self.task_input.text()
         self.task_list.add_task(task_text)
         self.task_input.clear()
-
-        # Save tasks to CSV file
         self.save_tasks_to_csv()
 
     def remove_checked_tasks(self):
         self.task_list.remove_checked_tasks()
-
-        # Save tasks to CSV file
         self.save_tasks_to_csv()
-        
+
     def show_info_dialog(self):
         self.info_dialog.apply_styles()
         self.info_dialog.exec()
@@ -151,7 +140,6 @@ class ToDoListApp(QWidget):
             row = self.task_list.row(item)
             self.task_list.takeItem(row)
             del item
-            # Save tasks to CSV file
             self.save_tasks_to_csv()
 
     def confirm_start_pomodoro(self):
@@ -171,23 +159,22 @@ class ToDoListApp(QWidget):
         self.stop_button.setVisible(True)
 
     def reset_application_state(self):
-        # Stop both Pomodoro and break timers
         self.pomodoro_manager.stop()
         self.pomodoro_manager.break_timer.stop()
 
-        # Reset UI elements
         self.start_button.setVisible(True)
         self.stop_button.setVisible(False)
         self.break_tomato.setText("")
         self.update_timer_label(QTime(0, 0), is_pomodoro=False)
-        
-        # Reset other relevant state variables
+
         self.break_count = 0
         self.emojis = []
 
     def stop_pomodoro(self):
-        # Check if either the Pomodoro timer or break timer is active
-        if self.pomodoro_manager.isActive() or self.pomodoro_manager.break_timer.isActive():
+        if (
+            self.pomodoro_manager.isActive()
+            or self.pomodoro_manager.break_timer.isActive()
+        ):
             confirmation = QMessageBox.question(
                 self,
                 "Stop Timer",
@@ -197,15 +184,10 @@ class ToDoListApp(QWidget):
 
             if confirmation == QMessageBox.StandardButton.Yes:
                 if self.pomodoro_manager.is_pomodoro:
-                    # If it's a Pomodoro session, stop the Pomodoro timer
                     self.pomodoro_manager.stop()
                 else:
-                    # If it's a break session, stop the break timer and reset it
                     self.pomodoro_manager.break_timer.stop()
-
-                # Reset the application state
                 self.reset_application_state()
-
 
     def update_timer_label(self, duration, is_pomodoro=True):
         timer_type = "Focus" if is_pomodoro else "Break"
@@ -244,7 +226,5 @@ class ToDoListApp(QWidget):
 
     def handle_login_successful(self, username):
         self.username = username
-        # Load tasks from CSV file on login
         self.load_tasks_from_csv()
-        # Show the main app window
         self.show()

@@ -1,8 +1,16 @@
 import csv
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
+from PyQt6.QtWidgets import (
+    QDialog,
+    QVBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QMessageBox,
+)
 from styles import RegisterWindowStyles
 from PyQt6 import QtGui
 import os
+
 
 class RegisterWindow(QDialog):
     def __init__(self):
@@ -25,19 +33,21 @@ class RegisterWindow(QDialog):
         username_label = QLabel("Username:")
         layout.addWidget(username_label)
         layout.addWidget(self.username_input)
-        
+
         password_label = QLabel("Password:")
         layout.addWidget(password_label)
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.password_input)
-        
+
         confirm_password_label = QLabel("Confirm Password:")
         layout.addWidget(confirm_password_label)
         self.confirm_password_input.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.confirm_password_input)
-        
+
         layout.addWidget(self.register_button)
-        layout.setContentsMargins(layout_margin, layout_margin, layout_margin, layout_margin)
+        layout.setContentsMargins(
+            layout_margin, layout_margin, layout_margin, layout_margin
+        )
         self.setLayout(layout)
         self.setWindowIcon(QtGui.QIcon("tomato.png"))
         self.setWindowTitle("Register")
@@ -52,7 +62,6 @@ class RegisterWindow(QDialog):
         confirm_password = self.confirm_password_input.text()
 
         if username and password == confirm_password:
-            # Perform registration logic here
             if not register_user(username, password):
                 QMessageBox.warning(self, "Registration Failed", "User already exists.")
             else:
@@ -73,9 +82,8 @@ class RegisterWindow(QDialog):
         self.register_button.setStyleSheet(button_style)
 
 
-
 def register_user(username, password):
-    folder_path = "user_csv_files"  # Change this to the desired folder name
+    folder_path = "user_csv_files"
 
     # Create the folder if it doesn't exist
     if not os.path.exists(folder_path):
@@ -102,8 +110,8 @@ def register_user(username, password):
             # Write the new user
             writer.writerow({"Username": username, "Password": password})
 
-        return True  # Registration successful
+        return True
 
     except Exception as e:
         print(f"Error registering user: {e}")
-        return False  # Registration failed
+        return False

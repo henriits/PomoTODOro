@@ -4,8 +4,6 @@ from login_window import LoginWindow
 from todo_list_app import ToDoListApp
 
 if __name__ == "__main__":
-    import sys
-
     app = QApplication(sys.argv)
     login_window = LoginWindow()
 
