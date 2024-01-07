@@ -1,11 +1,14 @@
 from PyQt6.QtWidgets import QDialog, QLabel, QVBoxLayout
 from styles import InfoStyles
+from PyQt6 import QtGui
+
 class InfoDialog(QDialog):
     def __init__(self, focus_time, short_break_time, long_break_time):
         super().__init__()
 
+        self.setWindowIcon(QtGui.QIcon("tomato.png"))
         self.setWindowTitle("Pomodoro Information")
-        self.setGeometry(200, 200, 400, 200)
+        self.setGeometry(600, 200, 400, 200)
 
         info_label = QLabel(
             f"The Pomodoro Technique is a time management method that uses a timer\n"
@@ -19,6 +22,12 @@ class InfoDialog(QDialog):
             "Emojis:\n"
             "🥱 - Long Break\n"
             "🍅 - Short Break"
+            f"\n\n"
+            "Tasks:\n"
+            "All the tasks added, will be saved to the csv file.\n"
+            "CSV file will be located in the same directory as pomotodoro.exe "
+            f"\n\n"
+            "Happy Focusing!"
         )
 
         layout = QVBoxLayout()

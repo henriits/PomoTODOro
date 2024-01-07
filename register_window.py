@@ -1,6 +1,7 @@
 import csv
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 from styles import RegisterWindowStyles
+from PyQt6 import QtGui
 import os
 
 class RegisterWindow(QDialog):
@@ -33,6 +34,7 @@ class RegisterWindow(QDialog):
         layout.addWidget(self.register_button)
         layout.setContentsMargins(layout_margin, layout_margin, layout_margin, layout_margin)
         self.setLayout(layout)
+        self.setWindowIcon(QtGui.QIcon("tomato.png"))
         self.setWindowTitle("Register")
         self.setGeometry(1200, 200, 300, 100)
 
