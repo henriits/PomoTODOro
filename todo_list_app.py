@@ -32,6 +32,7 @@ class ToDoListApp(QWidget):
         self.remove_button = QPushButton("Remove Checked Tasks")
         self.start_button = QPushButton("Start Pomodoro")
         self.stop_button = QPushButton("Reset Pomodoro") 
+        self.show_info = QPushButton("Show Info")
         self.timer_label = QLabel("")
         self.pomodoro_manager = PomodoroTimer(self)
         self.break_count = 0
@@ -53,7 +54,9 @@ class ToDoListApp(QWidget):
             self.timer_label,
             alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight,
         )
+        layout.addWidget(self.show_info)
         layout.addWidget(QLabel("Tasks:"))
+
         layout.addWidget(self.task_list)
         layout.addWidget(self.task_input)
         layout.addWidget(
