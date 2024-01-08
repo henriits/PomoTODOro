@@ -22,6 +22,8 @@ class RegisterWindow(QDialog):
         self.password_input = QLineEdit()
         self.confirm_password_input = QLineEdit()
         self.register_button = QPushButton("Register")
+        self.show_password_button = QPushButton("Show Password")
+        self.show_password_button.setCheckable(True)
 
         self.setup_ui()
         self.setup_logic()
@@ -45,7 +47,9 @@ class RegisterWindow(QDialog):
         layout.addWidget(confirm_password_label)
         self.confirm_password_input.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.confirm_password_input)
-
+        layout.addWidget(self.show_password_button)
+        self.show_password_button.clicked.connect(self.toggle_password_visibility)
+        
         layout.addWidget(self.register_button)
         layout.setContentsMargins(
             layout_margin, layout_margin, layout_margin, layout_margin
@@ -54,6 +58,16 @@ class RegisterWindow(QDialog):
         self.setWindowIcon(QtGui.QIcon(ToDoListApp.resource_path("icon.ico")))
         self.setWindowTitle("Register")
         self.setGeometry(1200, 200, 300, 150)
+        
+        
+        
+    def toggle_password_visibility(self):
+        if self.show_password_button.isChecked():
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.confirm_password_input.setEchoMode(QLineEdit.EchoMode.Normal)
+        else:
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+            self.confirm_password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
     def setup_logic(self):
         self.register_button.clicked.connect(self.try_register)

@@ -27,6 +27,8 @@ class LoginWindow(QDialog):
         self.password_input = QLineEdit()
         self.login_button = QPushButton("Login")
         self.register_button = QPushButton("Register")
+        self.show_password_button = QPushButton("Show Password")
+        self.show_password_button.setCheckable(True)
 
         self.setup_ui()
         self.setup_logic()
@@ -47,6 +49,9 @@ class LoginWindow(QDialog):
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
         layout.addWidget(self.password_input)
+        layout.addWidget(self.show_password_button)
+        
+        self.show_password_button.clicked.connect(self.toggle_password_visibility)
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(self.login_button)
         buttons_layout.addWidget(self.register_button)
@@ -58,6 +63,13 @@ class LoginWindow(QDialog):
         self.setWindowIcon(QtGui.QIcon(ToDoListApp.resource_path("icon.ico")))
         self.setWindowTitle("Login")
         self.setGeometry(1200, 200, 300, 150)
+        
+    def toggle_password_visibility(self):
+        if self.show_password_button.isChecked():
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
+        else:
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+ 
 
     def setup_logic(self):
         self.login_button.clicked.connect(self.try_login)
