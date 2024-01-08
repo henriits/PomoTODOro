@@ -63,12 +63,19 @@ class RegisterWindow(QDialog):
         password = self.password_input.text()
         confirm_password = self.confirm_password_input.text()
 
-        # Validate email using regex
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             QMessageBox.warning(self, "Registration Failed", "Invalid email format.")
             return
 
-        if email and password == confirm_password:
+        if not password:
+            QMessageBox.warning(self, "Registration Failed", "Password cannot be empty.")
+            return
+
+        if not re.search(r"[A-Z]", password) or not re.search(r"[!@#$%^&*()_+,\-.;:'\"<>?/\[\\\]{|}~]", password):
+            QMessageBox.warning(self, "Registration Failed", "Password must contain at least one uppercase letter and one symbol.")
+            return
+
+        if password == confirm_password:
             if not register_user(email, password):
                 QMessageBox.warning(self, "Registration Failed", "User already exists.")
             else:
@@ -77,7 +84,8 @@ class RegisterWindow(QDialog):
                 )
                 self.accept()
         else:
-            QMessageBox.warning(self, "Registration Failed", "Password do not match.")
+            QMessageBox.warning(self, "Registration Failed", "Passwords do not match.")
+
 
     def apply_styles(self):
         input_style = RegisterWindowStyles.get_input_style()
