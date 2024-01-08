@@ -12,6 +12,7 @@ from PyQt6 import QtGui
 from PyQt6.QtCore import pyqtSignal
 from styles import LoginWindowStyles
 from register_window import RegisterWindow
+from todo_list_app import ToDoListApp
 import os
 import re
 
@@ -53,7 +54,7 @@ class LoginWindow(QDialog):
             layout_margin, layout_margin, layout_margin, layout_margin
         )
         self.setLayout(layout)
-        self.setWindowIcon(QtGui.QIcon("tomato.png"))
+        self.setWindowIcon(QtGui.QIcon(ToDoListApp.resource_path("icon.ico")))
         self.setWindowTitle("Login")
         self.setGeometry(1200, 200, 300, 150)
 

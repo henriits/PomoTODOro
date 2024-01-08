@@ -1,13 +1,24 @@
 from PyQt6.QtWidgets import QDialog, QLabel, QVBoxLayout
 from styles import InfoStyles
 from PyQt6 import QtGui
+import os
+import sys
 
 
 class InfoDialog(QDialog):
+    @staticmethod
+    def resource_path(relative_path):
+        try:
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+    
     def __init__(self, focus_time, short_break_time, long_break_time):
         super().__init__()
 
-        self.setWindowIcon(QtGui.QIcon("tomato.png"))
+        self.setWindowIcon(QtGui.QIcon(self.resource_path("icon.ico")))
         self.setWindowTitle("Pomodoro Information")
         self.setGeometry(600, 200, 400, 200)
 

@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import (
 )
 from styles import RegisterWindowStyles
 from PyQt6 import QtGui
+from todo_list_app import ToDoListApp
 import os
 import re
 
@@ -49,7 +50,7 @@ class RegisterWindow(QDialog):
             layout_margin, layout_margin, layout_margin, layout_margin
         )
         self.setLayout(layout)
-        self.setWindowIcon(QtGui.QIcon("tomato.png"))
+        self.setWindowIcon(QtGui.QIcon(ToDoListApp.resource_path("icon.ico")))
         self.setWindowTitle("Register")
         self.setGeometry(1200, 200, 300, 150)
 

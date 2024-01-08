@@ -16,9 +16,20 @@ from pomodoro_timer import PomodoroTimer
 from task_widget import TaskWidget
 from styles import ToDoListStyles
 import os
+import sys
 
 
 class ToDoListApp(QWidget):
+    @staticmethod
+    def resource_path(relative_path):
+        try:
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+    
+    
     def __init__(self, email):
         super().__init__()
 
@@ -47,6 +58,9 @@ class ToDoListApp(QWidget):
 
         self.setup_ui()
         self.setup_logic()
+    
+
+
 
     def setup_ui(self):
         layout = QVBoxLayout(self)
@@ -74,7 +88,7 @@ class ToDoListApp(QWidget):
         layout.addLayout(button_layout)
         self.setLayout(layout)
 
-        self.setWindowIcon(QtGui.QIcon("tomato.png"))
+        self.setWindowIcon(QtGui.QIcon(self.resource_path("icon.ico")))
         self.setWindowTitle("PomoTODOro")
         self.setGeometry(800, 200, 700, 600)
 
@@ -228,3 +242,4 @@ class ToDoListApp(QWidget):
         self.email = email
         self.load_tasks_from_csv()
         self.show()
+
