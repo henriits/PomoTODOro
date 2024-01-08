@@ -69,6 +69,7 @@ class ToDoListApp(QWidget):
         layout.addWidget(QLabel("Tasks:"))
 
         layout.addWidget(self.task_list)
+        self.task_input.setPlaceholderText("Enter your task here")
         layout.addWidget(self.task_input)
         layout.addWidget(
             self.break_tomato,
