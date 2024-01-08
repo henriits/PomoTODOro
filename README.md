@@ -33,5 +33,10 @@ python main.py
 If using pomotodoro.exe file, you can run the application by double-clicking the executable. The application will work seamlessly and create a CSV file in the same directory as the .exe file.
 ## Images of application
 
+![login1](https://github.com/henriits/PomoTODOro/assets/121551949/8a30964e-ae49-48fa-a448-70cbf94b71aa)
+![login2](https://github.com/henriits/PomoTODOro/assets/121551949/29900068-d3ae-4010-837c-211acde99ff9)
+![register](https://github.com/henriits/PomoTODOro/assets/121551949/4f1f4e29-1685-4d2a-ad8e-9ad90616fe32)
+![application](https://github.com/henriits/PomoTODOro/assets/121551949/771e01ff-d6a2-4152-9051-fe7496a4e2e9)
+![info](https://github.com/henriits/PomoTODOro/assets/121551949/32ee405b-6f58-4f75-9d54-62fbb6c317f3)
 
 
