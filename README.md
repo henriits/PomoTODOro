@@ -36,17 +36,16 @@ If using pomotodoro.exe file, you can run the application by double-clicking the
 <div align="center">
 
 ![login1](https://github.com/henriits/PomoTODOro/assets/121551949/8a30964e-ae49-48fa-a448-70cbf94b71aa)
-</div>
-<div align="center">
+
+
 ![login2](https://github.com/henriits/PomoTODOro/assets/121551949/29900068-d3ae-4010-837c-211acde99ff9)
-</div>
-<div align="center">
+
+
 ![register](https://github.com/henriits/PomoTODOro/assets/121551949/4f1f4e29-1685-4d2a-ad8e-9ad90616fe32)
-</div>
-<div align="center">
+
+
 ![application](https://github.com/henriits/PomoTODOro/assets/121551949/771e01ff-d6a2-4152-9051-fe7496a4e2e9)
-</div>
-<div align="center">
+
 ![info](https://github.com/henriits/PomoTODOro/assets/121551949/32ee405b-6f58-4f75-9d54-62fbb6c317f3)
 </div>
 
