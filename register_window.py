@@ -49,7 +49,7 @@ class RegisterWindow(QDialog):
         layout.addWidget(self.confirm_password_input)
         layout.addWidget(self.show_password_button)
         self.show_password_button.clicked.connect(self.toggle_password_visibility)
-        
+
         layout.addWidget(self.register_button)
         layout.setContentsMargins(
             layout_margin, layout_margin, layout_margin, layout_margin
@@ -58,9 +58,7 @@ class RegisterWindow(QDialog):
         self.setWindowIcon(QtGui.QIcon(ToDoListApp.resource_path("icon.ico")))
         self.setWindowTitle("Register")
         self.setGeometry(1200, 200, 300, 150)
-        
-        
-        
+
     def toggle_password_visibility(self):
         if self.show_password_button.isChecked():
             self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
@@ -82,11 +80,19 @@ class RegisterWindow(QDialog):
             return
 
         if not password:
-            QMessageBox.warning(self, "Registration Failed", "Password cannot be empty.")
+            QMessageBox.warning(
+                self, "Registration Failed", "Password cannot be empty."
+            )
             return
 
-        if not re.search(r"[A-Z]", password) or not re.search(r"[!@#$%^&*()_+,\-.;:'\"<>?/\[\\\]{|}~]", password):
-            QMessageBox.warning(self, "Registration Failed", "Password must contain at least one uppercase letter and one symbol.")
+        if not re.search(r"[A-Z]", password) or not re.search(
+            r"[!@#$%^&*()_+,\-.;:'\"<>?/\[\\\]{|}~]", password
+        ):
+            QMessageBox.warning(
+                self,
+                "Registration Failed",
+                "Password must contain at least one uppercase letter and one symbol.",
+            )
             return
 
         if password == confirm_password:
@@ -99,7 +105,6 @@ class RegisterWindow(QDialog):
                 self.accept()
         else:
             QMessageBox.warning(self, "Registration Failed", "Passwords do not match.")
-
 
     def apply_styles(self):
         input_style = RegisterWindowStyles.get_input_style()

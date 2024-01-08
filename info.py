@@ -7,7 +7,7 @@ import sys
 
 class InfoDialog(QDialog):
     @staticmethod
-    #This method is required for extraction .exe icon to show
+    # This method is required for extraction .exe icon to show
     def resource_path(relative_path):
         try:
             base_path = sys._MEIPASS
