@@ -13,6 +13,7 @@ from todo_list_app import ToDoListApp
 import os
 import re
 
+
 class RegisterWindow(QDialog):
     def __init__(self):
         super().__init__()
@@ -86,6 +87,7 @@ class RegisterWindow(QDialog):
         self.password_input.setStyleSheet(input_style)
         self.confirm_password_input.setStyleSheet(input_style)
         self.register_button.setStyleSheet(button_style)
+
 
 def register_user(email, password):
     folder_path = "user_csv_files"

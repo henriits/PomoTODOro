@@ -14,7 +14,7 @@ class InfoDialog(QDialog):
             base_path = os.path.abspath(".")
 
         return os.path.join(base_path, relative_path)
-    
+
     def __init__(self, focus_time, short_break_time, long_break_time):
         super().__init__()
 

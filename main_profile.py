@@ -7,7 +7,7 @@ from todo_list_app import ToDoListApp
 if __name__ == "__main__":
     # Wrap the main execution part with cProfile.run()
     cProfile.run(
-        '''
+        """
 app = QApplication(sys.argv)
 login_window = LoginWindow()
 
@@ -19,6 +19,6 @@ login_window.login_successful.connect(todo_list_app.handle_login_successful)
 
 login_window.show()
 sys.exit(app.exec())
-        ''',
-        sort='cumulative'
+        """,
+        sort="cumulative",
     )

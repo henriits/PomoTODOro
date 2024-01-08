@@ -28,8 +28,7 @@ class ToDoListApp(QWidget):
             base_path = os.path.abspath(".")
 
         return os.path.join(base_path, relative_path)
-    
-    
+
     def __init__(self, email):
         super().__init__()
 
@@ -58,9 +57,6 @@ class ToDoListApp(QWidget):
 
         self.setup_ui()
         self.setup_logic()
-    
-
-
 
     def setup_ui(self):
         layout = QVBoxLayout(self)
@@ -126,7 +122,9 @@ class ToDoListApp(QWidget):
     def load_tasks_from_csv(self):
         try:
             folder_path = "user_csv_files"
-            csv_file_path = os.path.join(folder_path, f"{self.email.split('@')[0]}_tasks.csv")
+            csv_file_path = os.path.join(
+                folder_path, f"{self.email.split('@')[0]}_tasks.csv"
+            )
 
             with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
                 reader = csv.reader(csvfile)
@@ -138,7 +136,9 @@ class ToDoListApp(QWidget):
 
     def save_tasks_to_csv(self):
         folder_path = "user_csv_files"
-        csv_file_path = os.path.join(folder_path, f"{self.email.split('@')[0]}_tasks.csv")
+        csv_file_path = os.path.join(
+            folder_path, f"{self.email.split('@')[0]}_tasks.csv"
+        )
 
         with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
             writer = csv.writer(csvfile)
@@ -242,4 +242,3 @@ class ToDoListApp(QWidget):
         self.email = email
         self.load_tasks_from_csv()
         self.show()
-

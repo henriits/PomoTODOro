@@ -16,6 +16,7 @@ from todo_list_app import ToDoListApp
 import os
 import re
 
+
 class LoginWindow(QDialog):
     login_successful = pyqtSignal(str)
 
