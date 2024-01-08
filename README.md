@@ -27,7 +27,7 @@ Run the application:
 ```
 ```
 python main.py
-
+```
 
 ### Createing and Running the Executable
 ```
