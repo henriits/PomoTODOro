@@ -27,9 +27,13 @@ Run the application:
 ```
 ```
 python main.py
-```
 
-### Running the Executable
+
+### Createing and Running the Executable
+```
+pyinstaller --name=pomotodoro --onefile --windowed --add-data "icon.ico;." --icon=icon.ico  main.py   
+```
+this will make the applicati dist folder you will find pomodoro.exe. 
 If using pomotodoro.exe file, you can run the application by double-clicking the executable. The application will work seamlessly and create a CSV file in the same directory as the .exe file.
 ## Images of application
 
