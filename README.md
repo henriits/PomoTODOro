@@ -44,7 +44,7 @@ If using pomotodoro.exe file, you can run the application by double-clicking the
 ![register](https://github.com/henriits/PomoTODOro/assets/121551949/4f1f4e29-1685-4d2a-ad8e-9ad90616fe32)
 
 
-![application](https://github.com/henriits/PomoTODOro/assets/121551949/771e01ff-d6a2-4152-9051-fe7496a4e2e9)
+![application](https://github.com/henriits/PomoTODOro/assets/121551949/c6ec0d14-400e-4e73-bc95-a53522794384)
 
 ![info](https://github.com/henriits/PomoTODOro/assets/121551949/32ee405b-6f58-4f75-9d54-62fbb6c317f3)
 </div>
