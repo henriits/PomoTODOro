@@ -21,6 +21,7 @@ import sys
 
 class ToDoListApp(QWidget):
     @staticmethod
+    #This method is required for extraction .exe icon to show
     def resource_path(relative_path):
         try:
             base_path = sys._MEIPASS
