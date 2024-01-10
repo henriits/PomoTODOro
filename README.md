@@ -50,7 +50,7 @@ If using pomotodoro.exe file, you can run the application by double-clicking the
 
 ![application](https://github.com/henriits/PomoTODOro/assets/121551949/c6ec0d14-400e-4e73-bc95-a53522794384)
 
-![info](https://github.com/henriits/PomoTODOro/assets/121551949/32ee405b-6f58-4f75-9d54-62fbb6c317f3)
+![information](https://github.com/henriits/PomoTODOro/assets/121551949/df351710-ebdd-42ee-a040-1667c30eb5af)
 </div>
 
 
