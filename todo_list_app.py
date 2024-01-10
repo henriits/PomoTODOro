@@ -35,7 +35,7 @@ class ToDoListApp(QWidget):
 
         self.email = email
         self.info_dialog = InfoDialog(
-            focus_time=25, short_break_time=5, long_break_time=15
+            focus_minutes=PomodoroTimer.START_MINUTES,focus_seconds=PomodoroTimer.START_SECONDS,short_minutes=PomodoroTimer.SHORT_MINUTES,short_seconds=PomodoroTimer.SHORT_SECONDS,long_minutes=PomodoroTimer.LONG_MINUTES,long_seconds=PomodoroTimer.LONG_SECONDS
         )
         self.task_list = TasksList()
         self.task_input = QLineEdit()
