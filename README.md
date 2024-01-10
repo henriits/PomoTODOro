@@ -33,7 +33,7 @@ python main.py
 ```
 pyinstaller --name=pomotodoro --onefile --windowed --add-data "C:\*** add here full path ***\icon.ico;." --icon=icon.ico main.py   
 ```
-Add full path to icon, this will make the application dist folder you will find pomodoro.exe. 
+Add full path to icon, this will make multiple files/folders including dist folder, where you will find pomodoro.exe. 
 If using pomotodoro.exe file, you can run the application by double-clicking the executable. The application will work seamlessly and create a CSV file in the same directory as the .exe file.
 ## Images of application
 
