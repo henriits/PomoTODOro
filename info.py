@@ -4,6 +4,7 @@ from PyQt6 import QtGui
 import os
 import sys
 
+
 class InfoDialog(QDialog):
     @staticmethod
     # This method is required for extraction .exe icon to show
@@ -15,7 +16,15 @@ class InfoDialog(QDialog):
 
         return os.path.join(base_path, relative_path)
 
-    def __init__(self, focus_minutes, focus_seconds, short_minutes, short_seconds, long_minutes, long_seconds):
+    def __init__(
+        self,
+        focus_minutes,
+        focus_seconds,
+        short_minutes,
+        short_seconds,
+        long_minutes,
+        long_seconds,
+    ):
         super().__init__()
 
         self.setWindowIcon(QtGui.QIcon(self.resource_path("icon.ico")))
@@ -30,7 +39,6 @@ class InfoDialog(QDialog):
             f"- Focus Time: 25 minutes\n"
             f"- Short Break: 5 minutes\n"
             f"- After completing 4 cycles, take a Long Break: 15-30 minutes and seconds\n\n"
-            
             "Your setup:\n"
             f"- Focus Time: {focus_minutes} minutes and {focus_seconds} seconds\n"
             f"- Short Break: {short_minutes} minutes and {short_seconds} seconds\n"

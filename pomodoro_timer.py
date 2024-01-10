@@ -9,7 +9,7 @@ class PomodoroTimer(QTimer):
     SHORT_SECONDS = 2
     LONG_MINUTES = 0
     LONG_SECONDS = 4
-    
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
