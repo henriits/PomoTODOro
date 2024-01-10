@@ -17,8 +17,8 @@ This is a simple Pomodoro ToDo List application built using PyQt6, designed to h
 Clone the repository:
 
 ```
-git clone https://github.com/your-username/pomodoro-todo-list.git
-cd pomodoro-todo-list
+git clone https://github.com/henriits/PomoTODOro.git
+cd PomoTODOro
 ```
 Install dependencies:
 ```
@@ -31,9 +31,9 @@ python main.py
 
 ### Createing and Running the Executable
 ```
-pyinstaller --name=pomotodoro --onefile --windowed --add-data "icon.ico;." --icon=icon.ico  main.py   
+pyinstaller --name=pomotodoro --onefile --windowed --add-data "C:\*** add here full path ***\tomato.ico;." --icon=tomato.ico main.py   
 ```
-this will make the applicati dist folder you will find pomodoro.exe. 
+Add full path to icon, this will make the application dist folder you will find pomodoro.exe. 
 If using pomotodoro.exe file, you can run the application by double-clicking the executable. The application will work seamlessly and create a CSV file in the same directory as the .exe file.
 ## Images of application
 
