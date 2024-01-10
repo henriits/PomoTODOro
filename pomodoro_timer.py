@@ -5,6 +5,12 @@ from PyQt6.QtWidgets import QMessageBox
 class PomodoroTimer(QTimer):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.START_MINUTES = 0
+        self.START_SECONDS = 20
+        self.SHORT_MINUTES = 0
+        self.SHORT_SECONDS = 30
+        self.LONG_MINUTES = 0
+        self.LONG_SECONDS = 40
         self.timeout.connect(self.update_timer)
         self.break_timer = QTimer(self)
         self.break_timer.timeout.connect(self.update_break_timer)
@@ -32,15 +38,15 @@ class PomodoroTimer(QTimer):
             self.start_short_break()
 
     def start_pomodoro(self):
-        self.pomodoro_duration = QTime(0, 0, 5)
+        self.pomodoro_duration = QTime(0, self.START_MINUTES, self.START_SECONDS)
         self.start(1000)
 
     def start_short_break(self):
-        self.break_duration = QTime(0, 0, 10)
+        self.break_duration = QTime(0, self.SHORT_MINUTES, self.SHORT_SECONDS)
         self.break_timer.start(1000)
 
     def start_long_break(self):
-        self.break_duration = QTime(0, 0, 15)
+        self.break_duration = QTime(0, self.LONG_MINUTES, self.LONG_SECONDS)
         self.long_break_timer.start(1000)
 
     def update_timer(self):
