@@ -23,11 +23,22 @@ cd PomoTODOro
 Install dependencies:
 ```
 pip install -r requirements.txt
-Run the application:
 ```
+Run the application:
 ```
 python main.py
 ```
+Change the time for application:
+```
+Inside "pomidoro_timer.py" change time as desired. 
+        self.START_MINUTES = 0
+        self.START_SECONDS = 20  
+        self.SHORT_MINUTES = 0
+        self.SHORT_SECONDS = 30
+        self.LONG_MINUTES = 0
+        self.LONG_SECONDS = 40
+```
+
 
 ### Createing and Running the Executable
 ```
