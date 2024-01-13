@@ -126,35 +126,61 @@ class ToDoListApp(QWidget):
         self.info_dialog.apply_styles()
         self.info_dialog.exec()
 
+    def split_email(self):
+        try:
+            if "@" in self.email:
+                username, domain = self.email.split("@")
+                domain_parts = domain.split(".")
+
+                if len(domain_parts) >= 2:
+                    return username, domain_parts[0]
+                else:
+                    print(f"Invalid domain format: {domain}")
+            else:
+                print(f"Invalid email format: {self.email}")
+        except ValueError as e:
+            print(f"Error splitting email: {e}")
+
     def load_tasks_from_csv(self):
         try:
             folder_path = "user_csv_files"
-            csv_file_path = os.path.join(
-                folder_path, f"{self.email.split('@')[0]}_tasks.csv"
-            )
+            email_parts = self.split_email()
 
-            with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
-                reader = csv.reader(csvfile)
-                for row in reader:
-                    task_text = row[0]
-                    self.task_list.add_task(task_text)
+            if email_parts:
+                username, domain_part = email_parts
+                csv_file_path = os.path.join(
+                    folder_path, f"{username}_at_{domain_part}_tasks.csv"
+                )
+
+                with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+                    reader = csv.reader(csvfile)
+                    for row in reader:
+                        task_text = row[0]
+                        self.task_list.add_task(task_text)
         except FileNotFoundError:
             pass  # Ignore if the file doesn't exist
 
     def save_tasks_to_csv(self):
-        folder_path = "user_csv_files"
-        csv_file_path = os.path.join(
-            folder_path, f"{self.email.split('@')[0]}_tasks.csv"
-        )
+        try:
+            folder_path = "user_csv_files"
+            email_parts = self.split_email()
 
-        with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
-            writer = csv.writer(csvfile)
-            for i in range(self.task_list.count()):
-                item = self.task_list.item(i)
-                task_widget = self.task_list.itemWidget(item)
-                if isinstance(task_widget, TaskWidget):
-                    task_text = task_widget.task_label.text()
-                    writer.writerow([task_text])
+            if email_parts:
+                username, domain_part = email_parts
+                csv_file_path = os.path.join(
+                    folder_path, f"{username}_at_{domain_part}_tasks.csv"
+                )
+
+                with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
+                    writer = csv.writer(csvfile)
+                    for i in range(self.task_list.count()):
+                        item = self.task_list.item(i)
+                        task_widget = self.task_list.itemWidget(item)
+                        if isinstance(task_widget, TaskWidget):
+                            task_text = task_widget.task_label.text()
+                            writer.writerow([task_text])
+        except Exception as e:
+            print(f"Error saving tasks to CSV: {e}")
 
     def checkbox_state_changed(self, state, item):
         if state == 2:
