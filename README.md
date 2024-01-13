@@ -28,7 +28,7 @@ Run the application:
 ```
 python main.py
 ```
-Change the time for application:
+Change the timer for application:
 ```
 Inside "pomidoro_timer.py" change time as desired. 
         self.START_MINUTES = 0
